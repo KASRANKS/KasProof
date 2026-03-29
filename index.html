@@ -1,133 +1,526 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
-<title>KASPROOF</title>
-<meta content="Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No trust. Pure math." name="description"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=Outfit:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>KASPROOF — Proof of Existence on Kaspa</title>
+<meta name="description" content="Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No trust. Pure math."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020b11;--bg2:#061118;--bg3:#0a1820;--bg4:#0f1f2a;
+  --kas:#49eacb;--kas2:#6dfce0;--kdim:rgba(73,234,203,.06);--kglow:rgba(73,234,203,.15);--kmid:rgba(73,234,203,.35);
+  --gold:#f0c040;--purple:#c084fc;
+  --red:#ff4d6a;--rdim:rgba(255,77,106,.06);
+  --amb:#ffb84d;--adim:rgba(255,184,77,.06);
+  --pearl:#e6f5ef;--txt:#e6f5ef;--t2:rgba(230,245,239,.58);--t3:rgba(230,245,239,.32);--t4:rgba(230,245,239,.15);
+  --bdr:rgba(73,234,203,.08);--bdr2:rgba(73,234,203,.15);
+  --r:10px;--syne:'Syne',sans-serif;--dm:'Outfit',sans-serif;--geo:'JetBrains Mono',monospace
+}
+html{background:var(--bg);color:var(--pearl);font-family:var(--dm);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;overflow-x:hidden}
+::selection{background:var(--kas);color:var(--bg)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-<link href="src/assets/css/styles.css" rel="stylesheet"/></head>
+nav{position:fixed;top:0;width:100%;z-index:200;padding:0 32px;height:60px;display:flex;align-items:center;
+  background:rgba(5,8,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr)}
+.nav-inner{max-width:1100px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--syne);font-weight:800;font-size:18px;color:var(--pearl);letter-spacing:4px;text-transform:uppercase;display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--kas);box-shadow:0 0 12px var(--kglow);animation:pulse 2s infinite}
+.logo span{color:var(--kas)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{font-family:var(--geo);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(230,245,239,.45);text-decoration:none;transition:color .25s,text-shadow .25s}
+.nav-links a:hover{color:var(--kas);text-shadow:0 0 18px rgba(73,234,203,.4)}
+.net-badge{font-family:var(--geo);font-size:11px;padding:6px 16px;border-radius:20px;letter-spacing:.5px;transition:.3s}
+.net-badge.off{color:var(--t3);border:1px solid var(--t4)}
+.net-badge.on{color:var(--kas);border:1px solid var(--kmid);background:var(--kdim)}
+.net-badge.err{color:var(--red);border:1px solid rgba(255,77,106,.3);background:var(--rdim)}
+
+section{position:relative;z-index:1;padding:100px 32px}
+.container{max-width:1100px;margin:0 auto}
+.section-label{font-family:var(--geo);font-size:12px;color:var(--kas);letter-spacing:5px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-label::before{content:'';width:20px;height:1px;background:var(--kas)}
+.section-title{font-family:var(--syne);font-size:clamp(32px,5vw,56px);font-weight:800;color:var(--pearl);line-height:.95;letter-spacing:-2px;margin-bottom:18px}
+.section-title em{font-style:normal;color:var(--kas)}
+.section-sub{font-size:18px;color:var(--t2);line-height:1.7;max-width:560px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr2),transparent);margin:0 32px}
+
+#hero{padding-top:160px;padding-bottom:120px;text-align:center}
+#hero .section-label{justify-content:center}
+#hero .section-label::before{display:none}
+.hero-title{font-family:var(--syne);font-weight:800;font-size:clamp(48px,8vw,88px);color:var(--pearl);line-height:.92;letter-spacing:-4px;margin-bottom:28px}
+.hero-title em{font-style:normal;background:linear-gradient(135deg,#49eacb 0%,#a8f8e8 30%,#49eacb 60%,#6dfce0 100%);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradient-shift 4s ease-in-out infinite;filter:drop-shadow(0 0 60px rgba(73,234,203,.35))}
+@keyframes gradient-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero-sub{font-family:var(--dm);font-size:clamp(16px,2vw,20px);font-weight:400;color:rgba(230,245,239,.55);line-height:1.7;max-width:620px;margin:0 auto 48px}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-family:var(--syne);font-size:15px;font-weight:700;
+  background:var(--kas);color:var(--bg);text-decoration:none;transition:.3s;border:none;cursor:pointer}
+.hero-cta:hover{box-shadow:0 0 40px var(--kglow);transform:translateY(-2px)}
+.hero-stats{display:flex;justify-content:center;gap:0;margin-top:72px;flex-wrap:wrap}
+.hstat{text-align:left;padding:20px 44px;border-left:2px solid rgba(73,234,203,.22)}.hstat:first-child{border-left:none;padding-left:0}
+.hstat-val{font-family:var(--syne);font-size:clamp(36px,4vw,52px);font-weight:800;color:var(--kas);letter-spacing:-2px;line-height:1;text-shadow:0 0 45px rgba(73,234,203,.55);margin-bottom:8px}
+.hstat-val span{color:var(--kas)}
+.hstat-label{font-family:var(--geo);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(230,245,239,.32)}
+
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:14px 0;position:relative;z-index:1}
+.ticker{display:flex;gap:48px;animation:scroll 30s linear infinite;width:max-content}
+.ticker span{font-family:var(--geo);font-size:13px;color:var(--t3);white-space:nowrap;display:flex;align-items:center;gap:8px}
+.ticker span::after{content:'◆';color:var(--kas);opacity:.3;font-size:6px}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.step{padding:36px 30px;background:var(--bg2);border:1px solid rgba(73,234,203,.08);border-radius:0;position:relative;transition:.3s;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.step:hover{border-color:rgba(73,234,203,.2);transform:translateY(-4px);box-shadow:0 0 40px rgba(73,234,203,.08)}
+.step-num{font-family:var(--syne);font-size:48px;font-weight:800;color:var(--bg3);position:absolute;top:16px;right:20px;line-height:1}
+.step-icon{font-size:28px;margin-bottom:16px;display:block}
+.step-title{font-family:var(--syne);font-size:20px;font-weight:700;color:var(--pearl);margin-bottom:10px}
+.step-desc{font-size:15px;color:var(--t2);line-height:1.6}
+
+#tool{background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:48px}
+.tool-info h3{font-family:var(--syne);font-size:20px;font-weight:700;color:#fff;margin-bottom:12px}
+.tool-info p{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px}
+
+.wallet{padding:20px;background:rgba(2,11,17,.8);border:1px solid rgba(73,234,203,.08);border-radius:0;margin-bottom:20px}
+.w-warn{padding:12px 16px;background:var(--adim);border:1px solid rgba(255,184,77,.15);border-radius:8px;margin-bottom:12px;font-size:13px;color:var(--amb);line-height:1.6}
+.w-warn strong{color:#ffd080}
+.wr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px}
+.wr .k{color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-size:11px;font-family:var(--geo)}
+.wr .v{color:var(--kas);word-break:break-all;max-width:60%;text-align:right;font-size:13px;font-family:var(--geo)}
+.wr .v.warn{color:var(--amb)}
+.wbtns{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.wbtns button{font-family:var(--geo);font-size:12px;padding:10px 18px;border-radius:6px;border:1px solid var(--bdr);background:var(--bg3);color:var(--t2);cursor:pointer;transition:.2s}
+.wbtns button:hover{border-color:var(--kas);color:var(--kas)}
+.wkey{margin-top:10px;padding:12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;display:none}
+.wkey .wlabel{font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:600;font-family:var(--geo)}
+.wkey .wval{font-size:13px;word-break:break-all;color:var(--amb);line-height:1.6;filter:blur(4px);cursor:pointer;transition:.2s;font-family:var(--geo)}
+.wkey .wval:hover{filter:blur(0)}
+.wkey input{width:100%;padding:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;font-family:var(--geo);font-size:13px;color:var(--kas);outline:none;margin-top:6px}
+
+.tool-panel{background:rgba(2,11,17,.8);border:1px solid rgba(73,234,203,.1);border-radius:0;overflow:hidden;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.tabs{display:flex;border-bottom:1px solid var(--bdr)}
+.tab{flex:1;text-align:center;padding:14px;cursor:pointer;font-family:var(--syne);font-size:14px;font-weight:700;color:var(--t3);transition:.2s;user-select:none;border-bottom:2px solid transparent}
+.tab:hover{color:var(--t2)}.tab.on{color:var(--kas);border-bottom-color:var(--kas);background:var(--kdim)}
+.pnl{display:none;padding:24px}.pnl.on{display:block}
+
+.dz{border:2px dashed rgba(73,234,203,.15);border-radius:0;padding:44px 24px;text-align:center;cursor:pointer;transition:.3s}
+.dz:hover,.dz.over{border-color:var(--kas);background:var(--kdim)}
+.dz.has{border-color:var(--kas);border-style:solid;background:var(--kdim)}
+.dz-i{font-size:32px;margin-bottom:10px;opacity:.4}
+.dz-t{font-size:15px;color:var(--t2);line-height:1.6}.dz-t strong{color:var(--txt)}
+.dz-f{margin-top:10px;padding:10px 16px;background:var(--bg2);border-radius:8px;display:inline-flex;align-items:center;gap:10px;font-family:var(--geo);font-size:13px;color:var(--kas)}
+.dz-f .x{cursor:pointer;color:var(--red);margin-left:6px;font-size:14px}
+
+.hb{margin-top:14px;padding:16px;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;font-family:var(--geo);font-size:13px;word-break:break-all;color:var(--kas);line-height:1.8;position:relative}
+.hb .l{font-size:12px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700}
+.hb .cp{position:absolute;top:10px;right:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:8px 14px;font-family:var(--geo);font-size:12px;color:var(--t3);cursor:pointer;transition:.2s}
+.hb .cp:hover{color:var(--kas)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:50px;font-family:var(--syne);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.3s;text-decoration:none}
+.bp{background:var(--kas);color:var(--bg);clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));border-radius:0;position:relative;overflow:hidden}.bp::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.2) 50%,transparent 60%);transform:translateX(-100%);transition:transform .5s}.bp:hover{box-shadow:0 0 80px rgba(73,234,203,.5);transform:translateY(-2px)}.bp:hover::after{transform:translateX(100%)}.bp:disabled{opacity:.15;cursor:not-allowed;box-shadow:none}
+.bs{background:transparent;color:var(--pearl);border:1px solid rgba(230,245,239,.2);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);border-radius:0}.bs:hover{border-color:rgba(230,245,239,.5);transform:translateY(-2px);box-shadow:0 0 40px rgba(230,245,239,.08)}
+.acts{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+
+.cert{margin-top:14px;padding:18px;background:rgba(6,17,24,.9);border:1px solid rgba(73,234,203,.08);border-radius:0}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px}
+.cr:last-child{border:none}
+.cr .k{color:var(--t2);font-family:var(--geo);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.cr .v{color:var(--txt);font-family:var(--geo);font-size:13px;text-align:right;max-width:56%;word-break:break-all}
+
+.vd{margin-top:14px;padding:18px;border-radius:12px;display:flex;gap:14px}
+.vd.pass{background:var(--kdim);border:1px solid rgba(73,234,203,.2)}
+.vd.fail{background:var(--rdim);border:1px solid rgba(255,77,106,.2)}
+.vd.warn{background:var(--adim);border:1px solid rgba(255,184,77,.2)}
+.vd-i{font-size:24px}.vd-title{font-family:var(--syne);font-weight:700;font-size:15px;margin-bottom:4px}
+.vd.pass .vd-title{color:var(--kas)}.vd.fail .vd-title{color:var(--red)}.vd.warn .vd-title{color:var(--amb)}
+.vd-b{font-size:14px;color:var(--t2);line-height:1.6}
+.chks{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.ck{display:flex;align-items:center;gap:10px;font-family:var(--geo);font-size:13px;color:var(--t2)}
+.ck .ci{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.ck.p .ci{background:var(--kdim);color:var(--kas)}.ck.f .ci{background:var(--rdim);color:var(--red)}
+
+.info{margin-top:14px;padding:14px 18px;background:var(--bg2);border-radius:10px;border-left:3px solid var(--kas);font-size:14px;color:var(--t2);line-height:1.7}
+.info strong{color:var(--txt)}.info.w{border-left-color:var(--amb)}.info.e{border-left-color:var(--red)}
+
+.proves-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.prove-card{padding:32px 28px;border-radius:0;border:1px solid var(--bdr);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.prove-card.yes{background:var(--kdim);border-color:rgba(73,234,203,.15)}
+.prove-card.no{background:var(--rdim);border-color:rgba(255,77,106,.1)}
+.prove-card h3{font-family:var(--syne);font-size:16px;font-weight:700;margin-bottom:14px}
+.prove-card.yes h3{color:var(--kas)}.prove-card.no h3{color:var(--red)}
+.prove-card li{font-size:15px;color:var(--t2);line-height:1.8;list-style:none;padding-left:20px;position:relative}
+.prove-card.yes li::before{content:'✓';position:absolute;left:0;color:var(--kas);font-size:12px}
+.prove-card.no li::before{content:'✕';position:absolute;left:0;color:var(--red);font-size:12px}
+
+.sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.sec-card{padding:28px;background:var(--bg2);border:1px solid rgba(73,234,203,.06);border-radius:0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.sec-card .sc-icon{font-size:24px;margin-bottom:12px}
+.sec-card h4{font-family:var(--syne);font-size:16px;font-weight:700;color:var(--pearl);margin-bottom:10px}
+.sec-card p{font-size:14px;color:var(--t2);line-height:1.6}
+
+footer{position:relative;z-index:1;border-top:1px solid var(--bdr);padding:40px 32px;text-align:center}
+footer .ftr-logo{font-family:var(--syne);font-weight:800;font-size:16px;color:#fff;margin-bottom:8px}
+footer .ftr-logo span{color:var(--kas)}
+footer p{font-family:var(--geo);font-size:13px;color:var(--t3);line-height:1.8}
+footer a{color:var(--t2);text-decoration:none;transition:.2s}
+footer a:hover{color:var(--kas)}
+
+#log{margin-top:14px;padding:12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;font-family:var(--geo);font-size:12px;color:var(--t3);max-height:160px;overflow-y:auto;display:none}
+
+@media(max-width:900px){.tool-grid{grid-template-columns:1fr}.proves-grid{grid-template-columns:1fr}.sec-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.steps{grid-template-columns:1fr}.hero-stats{gap:28px}.nav-links a:not(.net-badge){display:none}.cr{flex-direction:column;gap:4px;align-items:flex-start}.cr .v{text-align:left;max-width:100%}.acts{flex-direction:column}.btn{width:100%;justify-content:center}section{padding:60px 20px}}
+canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
+#cur{position:fixed;width:8px;height:8px;background:var(--kas);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;transform:translate(-50%,-50%);transition:transform .08s}
+#cur-r{position:fixed;width:32px;height:32px;border:1.5px solid rgba(73,234,203,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s}
+@media(pointer:coarse){#cur,#cur-r{display:none}}
+
+.rv{opacity:0;transform:translateY(28px);transition:all .8s cubic-bezier(.16,1,.3,1)}.rv.vis{opacity:1;transform:translateY(0)}
+</style>
+</head>
 <body>
 <canvas id="bgc"></canvas>
 <div id="cur"></div><div id="cur-r"></div>
+
 <nav><div class="nav-inner">
-<a class="logo" href="#"><div class="logo-dot"></div>KAS<span>PROOF</span></a>
-<div class="nav-links">
-<a href="#how">How it works</a><a href="#tool">Stamp / Verify</a><a href="#proves">What it proves</a><a href="#security">Security</a>
-<div class="net-badge off" id="status">LOADING...</div>
-</div>
+  <a class="logo" href="#"><div class="logo-dot"></div>KAS<span>PROOF</span></a>
+  <div class="nav-links">
+    <a href="#how">How it works</a><a href="#tool">Stamp / Verify</a><a href="#proves">What it proves</a><a href="#security">Security</a>
+    <div class="net-badge off" id="status">LOADING...</div>
+  </div>
 </div></nav>
+
 <section id="hero"><div class="container">
-<div class="section-label">KRC · BlockDAG · PoW · Immutable</div>
-<h1 class="hero-title">Proof of existence<br/>on <em>Kaspa</em></h1>
-<p class="hero-sub">Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No uploads. No trust. Pure math and chain.</p>
-<a class="hero-cta" href="#tool">Stamp a file →</a>
-<div class="hero-stats">
-<div class="hstat"><div class="hstat-val"><span>1</span>s</div><div class="hstat-label">First confirm</div></div>
-<div class="hstat"><div class="hstat-val"><span>3</span> KAS</div><div class="hstat-label">Per stamp</div></div>
-<div class="hstat"><div class="hstat-val">Forever</div><div class="hstat-label">On-chain</div></div>
-</div>
+  <div class="section-label">KRC · BlockDAG · PoW · Immutable</div>
+  <h1 class="hero-title">Proof of existence<br/>on <em>Kaspa</em></h1>
+  <p class="hero-sub">Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No uploads. No trust. Pure math and chain.</p>
+  <a href="#tool" class="hero-cta">Stamp a file →</a>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val"><span>1</span>s</div><div class="hstat-label">First confirm</div></div>
+    <div class="hstat"><div class="hstat-val"><span>3</span> KAS</div><div class="hstat-label">Per stamp</div></div>
+    <div class="hstat"><div class="hstat-val">Forever</div><div class="hstat-label">On-chain</div></div>
+  </div>
 </div></section>
+
 <div class="ticker-wrap"><div class="ticker">
-<span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>No Uploads</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>No Certificates</span><span>Transaction History</span>
-<span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>No Uploads</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>No Certificates</span><span>Transaction History</span>
+  <span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>No Uploads</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>No Certificates</span><span>Transaction History</span>
+  <span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>No Uploads</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>No Certificates</span><span>Transaction History</span>
 </div></div>
+
 <section id="how"><div class="container rv">
-<div class="section-label">The mechanism</div>
-<h2 class="section-title">How it <em>works</em></h2>
-<p class="section-sub">Three steps. No middlemen. Your file never leaves your device. Only its mathematical fingerprint touches the blockchain.</p>
-<div class="steps">
-<div class="step"><div class="step-num">01</div><div class="step-icon">🔐</div><div class="step-title">Hash</div><div class="step-desc">Your file is SHA-256 hashed locally in your browser. The hash is a unique fingerprint. Change one byte and the entire hash changes. Your file is never uploaded anywhere.</div></div>
-<div class="step"><div class="step-num">02</div><div class="step-icon">⛏</div><div class="step-title">Stamp</div><div class="step-desc">The hash becomes a Kaspa address through deterministic key derivation. A stamp transaction (3 KAS) is sent: 2 KAS to miners, 1 KAS protocol fee, 0.2 KAS proof dust. The timestamp is set by the Kaspa network, not by you.</div></div>
-<div class="step"><div class="step-num">03</div><div class="step-icon">🔍</div><div class="step-title">Verify</div><div class="step-desc">Anyone can drop the same file, derive the same address, and check if it has transactions. If yes, the file was stamped. The date is permanent and unforgeable.</div></div>
-</div>
+  <div class="section-label">The mechanism</div>
+  <h2 class="section-title">How it <em>works</em></h2>
+  <p class="section-sub">Three steps. No middlemen. Your file never leaves your device. Only its mathematical fingerprint touches the blockchain.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div class="step-icon">🔐</div><div class="step-title">Hash</div><div class="step-desc">Your file is SHA-256 hashed locally in your browser. The hash is a unique fingerprint. Change one byte and the entire hash changes. Your file is never uploaded anywhere.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-icon">⛏</div><div class="step-title">Stamp</div><div class="step-desc">The hash becomes a Kaspa address through deterministic key derivation. A stamp transaction (3 KAS) is sent: 2 KAS to miners, 1 KAS protocol fee, 0.2 KAS proof dust. The timestamp is set by the Kaspa network, not by you.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-icon">🔍</div><div class="step-title">Verify</div><div class="step-desc">Anyone can drop the same file, derive the same address, and check if it has transactions. If yes, the file was stamped. The date is permanent and unforgeable.</div></div>
+  </div>
 </div></section>
+
 <div class="divider"></div>
+
 <section id="tool"><div class="container">
-<div class="section-label">The tool</div>
-<h2 class="section-title">Stamp &amp; <em>Verify</em></h2>
-<p class="section-sub">Drop a file. Get permanent proof on the Kaspa BlockDAG. Or verify any file. No receipt needed, the chain is the proof.</p>
-<div class="tool-grid">
-<div class="tool-info">
-<div class="wallet" id="wallet-bar" style="display:none">
-<div class="w-warn">⚠ <strong>Use a dedicated wallet.</strong> Do NOT import your main KAS wallet. Load only what you need for stamping (~5-10 KAS). Browser wallet = hot wallet.</div>
-<div class="wr"><span class="k">Address</span><span class="v" id="w-addr">—</span></div>
-<div class="wr"><span class="k">Balance</span><span class="v" id="w-bal">—</span></div>
-<div class="wr"><span class="k">Network</span><span class="v" id="w-net">—</span></div>
-<div class="wbtns">
-<button onclick="navigator.clipboard.writeText(document.getElementById('w-addr').textContent)">Copy address</button>
-<button onclick="refreshBalance()">Refresh balance</button>
-<button onclick="toggleKey('export')">Backup key</button>
-<button onclick="toggleKey('import')">Restore key</button>
-</div>
-<div class="wkey" id="wk-export">
-<div class="wlabel">⚠ Private key. NEVER share with anyone</div>
-<div class="wval" id="wk-val" title="Hover to reveal">hover to reveal</div>
-<button onclick="navigator.clipboard.writeText(document.getElementById('wk-val').textContent)" style="margin-top:8px;font-family:var(--geo);font-size:10px;padding:6px 14px;border:1px solid var(--bdr);background:var(--bg3);color:var(--t2);border-radius:6px;cursor:pointer">Copy key</button>
-</div>
-<div class="wkey" id="wk-import">
-<div class="wlabel">Paste private key to restore wallet</div>
-<input id="wk-input" placeholder="64 hex characters..."/>
-<button onclick="importKey()" style="margin-top:8px;font-family:var(--geo);font-size:10px;padding:6px 14px;border:1px solid var(--bdr);background:var(--bg3);color:var(--kas);border-radius:6px;cursor:pointer">Load key</button>
-</div>
-</div>
-<h3>One file. One hash. One address.</h3>
-<p>Every file produces a unique SHA-256 hash. That hash becomes a unique Kaspa address. Sending any transaction to that address is your timestamp, permanently recorded on the BlockDAG.</p>
-<p>Verification works in reverse: hash the file, derive the address, check if it has transaction history. If it does, the file was stamped. The earliest transaction is your proof date.</p>
-<p style="color:var(--kas);font-size:13px;font-weight:600">Your file never leaves your browser. Only the hash touches the chain.</p>
-<div id="log"></div>
-</div>
-<div class="tool-panel">
-<div class="tabs"><div class="tab on" onclick="sw('stamp')">STAMP</div><div class="tab" onclick="sw('verify')">VERIFY</div></div>
-<div class="pnl on" id="tp-stamp">
-<div class="dz" id="dz-s" onclick="document.getElementById('fi-s').click()"><input hidden="" id="fi-s" type="file"/><div id="dz-sc"><div class="dz-i">📄</div><div class="dz-t"><strong>Drop any file to stamp</strong><br/>image, document, contract, anything</div></div></div>
-<div id="s-info"></div><div class="acts" id="s-acts" style="display:none"><button class="btn bp" id="btn-stamp" onclick="doStamp()">⛏ Stamp on Kaspa</button></div><div id="s-res"></div>
-</div>
-<div class="pnl" id="tp-verify">
-<div class="dz" id="dz-v" onclick="document.getElementById('fi-v').click()"><input hidden="" id="fi-v" type="file"/><div id="dz-vc"><div class="dz-i">🔍</div><div class="dz-t"><strong>Drop any file to verify</strong><br/>no certificate needed. The chain is the proof</div></div></div>
-<div id="v-res"></div>
-</div>
-</div>
-</div>
+  <div class="section-label">The tool</div>
+  <h2 class="section-title">Stamp & <em>Verify</em></h2>
+  <p class="section-sub">Drop a file. Get permanent proof on the Kaspa BlockDAG. Or verify any file. No receipt needed, the chain is the proof.</p>
+  <div class="tool-grid">
+    <div class="tool-info">
+      <div class="wallet" id="wallet-bar" style="display:none">
+        <div class="w-warn">⚠ <strong>Use a dedicated wallet.</strong> Do NOT import your main KAS wallet. Load only what you need for stamping (~5-10 KAS). Browser wallet = hot wallet.</div>
+        <div class="wr"><span class="k">Address</span><span class="v" id="w-addr">—</span></div>
+        <div class="wr"><span class="k">Balance</span><span class="v" id="w-bal">—</span></div>
+        <div class="wr"><span class="k">Network</span><span class="v" id="w-net">—</span></div>
+        <div class="wbtns">
+          <button onclick="navigator.clipboard.writeText(document.getElementById('w-addr').textContent)">Copy address</button>
+          <button onclick="refreshBalance()">Refresh balance</button>
+          <button onclick="toggleKey('export')">Backup key</button>
+          <button onclick="toggleKey('import')">Restore key</button>
+        </div>
+        <div class="wkey" id="wk-export">
+          <div class="wlabel">⚠ Private key. NEVER share with anyone</div>
+          <div class="wval" id="wk-val" title="Hover to reveal">hover to reveal</div>
+          <button style="margin-top:8px;font-family:var(--geo);font-size:10px;padding:6px 14px;border:1px solid var(--bdr);background:var(--bg3);color:var(--t2);border-radius:6px;cursor:pointer" onclick="navigator.clipboard.writeText(document.getElementById('wk-val').textContent)">Copy key</button>
+        </div>
+        <div class="wkey" id="wk-import">
+          <div class="wlabel">Paste private key to restore wallet</div>
+          <input id="wk-input" placeholder="64 hex characters..."/>
+          <button style="margin-top:8px;font-family:var(--geo);font-size:10px;padding:6px 14px;border:1px solid var(--bdr);background:var(--bg3);color:var(--kas);border-radius:6px;cursor:pointer" onclick="importKey()">Load key</button>
+        </div>
+      </div>
+      <h3>One file. One hash. One address.</h3>
+      <p>Every file produces a unique SHA-256 hash. That hash becomes a unique Kaspa address. Sending any transaction to that address is your timestamp, permanently recorded on the BlockDAG.</p>
+      <p>Verification works in reverse: hash the file, derive the address, check if it has transaction history. If it does, the file was stamped. The earliest transaction is your proof date.</p>
+      <p style="color:var(--kas);font-size:13px;font-weight:600">Your file never leaves your browser. Only the hash touches the chain.</p>
+      <div id="log"></div>
+    </div>
+    <div class="tool-panel">
+      <div class="tabs"><div class="tab on" onclick="sw('stamp')">STAMP</div><div class="tab" onclick="sw('verify')">VERIFY</div></div>
+      <div class="pnl on" id="tp-stamp">
+        <div class="dz" id="dz-s" onclick="document.getElementById('fi-s').click()"><input type="file" id="fi-s" hidden/><div id="dz-sc"><div class="dz-i">📄</div><div class="dz-t"><strong>Drop any file to stamp</strong><br/>image, document, contract, anything</div></div></div>
+        <div id="s-info"></div><div id="s-acts" class="acts" style="display:none"><button class="btn bp" id="btn-stamp" onclick="doStamp()">⛏ Stamp on Kaspa</button></div><div id="s-res"></div>
+      </div>
+      <div class="pnl" id="tp-verify">
+        <div class="dz" id="dz-v" onclick="document.getElementById('fi-v').click()"><input type="file" id="fi-v" hidden/><div id="dz-vc"><div class="dz-i">🔍</div><div class="dz-t"><strong>Drop any file to verify</strong><br/>no certificate needed. The chain is the proof</div></div></div>
+        <div id="v-res"></div>
+      </div>
+    </div>
+  </div>
 </div></section>
+
 <div class="divider"></div>
+
 <section id="proves"><div class="container rv">
-<div class="section-label">What it proves</div>
-<h2 class="section-title">Trustless <em>proof</em></h2>
-<p class="section-sub">Two parties. One file. Both can verify. Neither can tamper. The DAG is the witness.</p>
-<div class="proves-grid">
-<div class="prove-card yes"><h3>✓ Immutable proof</h3><ul>
-<li>This exact file existed at this exact date</li><li>Not a single byte has been modified since stamping</li><li>The timestamp was set by the Kaspa network. Nobody can backdate it</li><li>Both parties can independently verify the same document</li><li>Neither party can alter the file without breaking verification</li>
-</ul></div>
-<div class="prove-card yes"><h3>✓ Real-world use</h3><ul>
-<li>Stamp a signed contract so both sides hold the same unbreakable proof</li><li>Prove your song, design, or code existed before anyone else claims it</li><li>Lock in an agreement with someone you don't trust. The DAG holds both accountable</li><li>Timestamp evidence, legal documents, or any file that must never change</li><li>Share a document knowing any tampering is instantly detectable</li>
-</ul></div>
-</div>
+  <div class="section-label">What it proves</div>
+  <h2 class="section-title">Trustless <em>proof</em></h2>
+  <p class="section-sub">Two parties. One file. Both can verify. Neither can tamper. The DAG is the witness.</p>
+  <div class="proves-grid">
+    <div class="prove-card yes"><h3>✓ Immutable proof</h3><ul>
+      <li>This exact file existed at this exact date</li><li>Not a single byte has been modified since stamping</li><li>The timestamp was set by the Kaspa network. Nobody can backdate it</li><li>Both parties can independently verify the same document</li><li>Neither party can alter the file without breaking verification</li>
+    </ul></div>
+    <div class="prove-card yes"><h3>✓ Real-world use</h3><ul>
+      <li>Stamp a signed contract so both sides hold the same unbreakable proof</li><li>Prove your song, design, or code existed before anyone else claims it</li><li>Lock in an agreement with someone you don't trust. The DAG holds both accountable</li><li>Timestamp evidence, legal documents, or any file that must never change</li><li>Share a document knowing any tampering is instantly detectable</li>
+    </ul></div>
+  </div>
 </div></section>
+
 <div class="divider"></div>
+
 <section id="security"><div class="container rv">
-<div class="section-label">Trust model</div>
-<h2 class="section-title">Security &amp; <em>privacy</em></h2>
-<p class="section-sub">No servers. No uploads. No accounts. Every critical operation happens locally in your browser.</p>
-<div class="sec-grid">
-<div class="sec-card"><div class="sc-icon">🔐</div><h4>Client-side hashing</h4><p>Your file is hashed with SHA-256 in the browser via the Web Crypto API. The file never leaves your device. Not even a byte.</p></div>
-<div class="sec-card"><div class="sc-icon">🧮</div><h4>Deterministic derivation</h4><p>File hash → private key → Kaspa address. Same file always produces the same address. Different file = different address. Pure math.</p></div>
-<div class="sec-card"><div class="sc-icon">📡</div><h4>Transaction history</h4><p>Verification checks the permanent transaction history via the Kaspa REST API, not just the current balance. Proof survives even if the dust is spent.</p></div>
-<div class="sec-card"><div class="sc-icon">⚡</div><h4>Adaptive fees</h4><p>If the network is busy, the priority fee bumps automatically. Stamps don't fail during high traffic, they just cost a fraction more.</p></div>
-<div class="sec-card"><div class="sc-icon">👁️</div><h4>Zero personal data</h4><p>No accounts. No emails. No tracking. No analytics. The wallet key lives in your browser's localStorage — nowhere else.</p></div>
-<div class="sec-card"><div class="sc-icon">🛡️</div><h4>Audited codebase</h4><p>XSS-sanitized logs. Timeout-protected API calls. File size guards. Response validation. Open source. Read every line.</p></div>
-</div>
+  <div class="section-label">Trust model</div>
+  <h2 class="section-title">Security & <em>privacy</em></h2>
+  <p class="section-sub">No servers. No uploads. No accounts. Every critical operation happens locally in your browser.</p>
+  <div class="sec-grid">
+    <div class="sec-card"><div class="sc-icon">🔐</div><h4>Client-side hashing</h4><p>Your file is hashed with SHA-256 in the browser via the Web Crypto API. The file never leaves your device. Not even a byte.</p></div>
+    <div class="sec-card"><div class="sc-icon">🧮</div><h4>Deterministic derivation</h4><p>File hash → private key → Kaspa address. Same file always produces the same address. Different file = different address. Pure math.</p></div>
+    <div class="sec-card"><div class="sc-icon">📡</div><h4>Transaction history</h4><p>Verification checks the permanent transaction history via the Kaspa REST API, not just the current balance. Proof survives even if the dust is spent.</p></div>
+    <div class="sec-card"><div class="sc-icon">⚡</div><h4>Adaptive fees</h4><p>If the network is busy, the priority fee bumps automatically. Stamps don't fail during high traffic, they just cost a fraction more.</p></div>
+    <div class="sec-card"><div class="sc-icon">👁️</div><h4>Zero personal data</h4><p>No accounts. No emails. No tracking. No analytics. The wallet key lives in your browser's localStorage — nowhere else.</p></div>
+    <div class="sec-card"><div class="sc-icon">🛡️</div><h4>Audited codebase</h4><p>XSS-sanitized logs. Timeout-protected API calls. File size guards. Response validation. Open source. Read every line.</p></div>
+  </div>
 </div></section>
+
 <footer><div class="container">
-<div class="ftr-logo">KAS<span>PROOF</span></div>
-<p>Proof of existence on Kaspa · BlockDAG · Hash-derived addresses · Unforgeable · Privacy-first</p>
-<p style="margin-top:12px"><a href="https://kaspa.org" target="_blank">kaspa.org</a> · <a href="https://kasranks.com" target="_blank">kasranks.com</a></p>
+  <div class="ftr-logo">KAS<span>PROOF</span></div>
+  <p>Proof of existence on Kaspa · BlockDAG · Hash-derived addresses · Unforgeable · Privacy-first</p>
+  <p style="margin-top:12px"><a href="https://kaspa.org" target="_blank">kaspa.org</a> · <a href="https://kasranks.com" target="_blank">kasranks.com</a></p>
 </div></footer>
 
+<script type="module">
+import * as kaspa from './kaspa/kaspa.js';
+const $=id=>document.getElementById(id);
+const LOG=$('log');
+function log(msg){const safe=String(msg).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));console.log('[KP]',msg);LOG.style.display='block';LOG.innerHTML+=`<div>${new Date().toLocaleTimeString()} · ${safe}</div>`;LOG.scrollTop=LOG.scrollHeight;}
+function setStatus(t,c){$('status').textContent=t;$('status').className='net-badge '+c;}
+let rpc=null,privateKey=null,address=null,currentNet='mainnet';
+const EXPECTED_NET='mainnet'; /* HARD GUARD — this file ONLY works on mainnet */
+const MAKER_WALLET='kaspa:qru9y27vkh9g9326sfn3gt085t36fplnnlxdq30xug3vnnpujjt2g0xx4zmg6';
+const MAKER_FEE=100000000n; /* 1 KAS */
+const PROOF_AMOUNT=20000000n; /* 0.2 KAS */
 
+function deriveProofAddress(fileHash){const proofKey=new kaspa.PrivateKey(fileHash);return proofKey.toKeypair().toAddress(currentNet);}
 
-<script src="src/assets/js/background.js"></script><script src="src/assets/js/app.js" type="module"></script><script src="src/assets/js/cursor.js"></script></body>
+/* ═══ KPP-1 PROTOCOL — payload builder ═══ */
+function buildKpp1Payload(hash){
+  const json=JSON.stringify({"p":"kpp-1","op":"stamp","hash":hash,"algo":"sha256"});
+  return Array.from(new TextEncoder().encode(json)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function stampWithPayload(entries,proofAddr,changeAddr,pFee,payloadHex,signerKeys){
+  /* Outputs: 0.2 KAS → proof, 1 KAS → maker. Priority fee (2 KAS) → miners */
+  const outputs=[{address:proofAddr,amount:PROOF_AMOUNT},{address:MAKER_WALLET,amount:MAKER_FEE}];
+  const result=await kaspa.createTransactions({networkId:currentNet,entries:entries,outputs:outputs,priorityFee:pFee,changeAddress:changeAddr});
+  let txId='';
+  for(const pending of result.transactions){
+    /* Path A: set payload directly on inner Transaction */
+    try{
+      const tx=pending.transaction;tx.payload=payloadHex;
+      kaspa.signTransaction(tx,signerKeys,true);
+      tx.finalize();
+      await rpc.submitTransaction({transaction:tx,allowOrphan:false});
+      txId=tx.id;log('TX LIVE (KPP-1 direct): '+txId);return{txId,inscribed:true};
+    }catch(ea){log('KPP-1 path A: '+String(ea));}
+    /* Path B: serialize → inject payload → rebuild → sign → submit */
+    try{
+      const txObj=pending.transaction.serializeToObject();txObj.payload=payloadHex;
+      const modTx=kaspa.Transaction.deserializeFromObject(txObj);
+      kaspa.signTransaction(modTx,signerKeys,true);
+      modTx.finalize();
+      await rpc.submitTransaction({transaction:modTx.serializeToObject(),allowOrphan:false});
+      txId=modTx.id;log('TX LIVE (KPP-1 serialize): '+txId);return{txId,inscribed:true};
+    }catch(eb){log('KPP-1 path B: '+String(eb));}
+    /* Path C: fallback — original method, no payload */
+    await pending.sign(signerKeys);txId=await pending.submit(rpc);
+    log('TX LIVE (no payload): '+txId);return{txId,inscribed:false};
+  }
+  throw new Error('No pending transactions generated');
+}
+
+const MAX_FILE_SIZE=500*1024*1024;
+async function hashFile(file){
+  if(file.size>MAX_FILE_SIZE)throw new Error('File too large ('+fz(file.size)+'). Maximum is 500 MB.');
+  if(file.size===0)throw new Error('File is empty (0 bytes). Cannot stamp an empty file.');
+  const buf=await file.arrayBuffer();const h=await crypto.subtle.digest('SHA-256',buf);
+  return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function initWallet(){
+  let saved=localStorage.getItem('kasproof_pk');
+  if(!saved){const kb=crypto.getRandomValues(new Uint8Array(32));saved=Array.from(kb).map(b=>b.toString(16).padStart(2,'0')).join('');localStorage.setItem('kasproof_pk',saved);log('New wallet generated');}else{log('Wallet loaded from storage');}
+  privateKey=new kaspa.PrivateKey(saved);address=privateKey.toKeypair().toAddress(currentNet);
+  $('w-addr').textContent=address.toString();$('w-net').textContent=currentNet;$('wk-val').textContent=saved;$('wallet-bar').style.display='block';log('Wallet: '+address.toString());
+}
+window.toggleKey=function(w){const exp=$('wk-export'),imp=$('wk-import');if(w==='export'){exp.style.display=exp.style.display==='none'?'block':'none';imp.style.display='none'}if(w==='import'){imp.style.display=imp.style.display==='none'?'block':'none';exp.style.display='none'}};
+window.importKey=function(){const val=$('wk-input').value.trim();if(val.length!==64||!/^[0-9a-fA-F]+$/.test(val)){alert('Invalid — need 64 hex characters');return}if(!confirm('Replace current wallet? Make sure you backed up your current key first.')){return}localStorage.setItem('kasproof_pk',val);location.reload();};
+window.refreshBalance=async function(){if(!rpc||!address)return;try{const{entries}=await rpc.getUtxosByAddresses([address.toString()]);let total=0n;for(const e of entries)total+=e.amount;const kas=Number(total)/100000000;$('w-bal').textContent=kas.toFixed(8)+' KAS';$('w-bal').className='v'+(kas===0?' warn':'');if(kas===0)log('Balance: 0 — fund this address');}catch(e){$('w-bal').textContent='error';log('Balance: '+String(e))}};
+
+try{log('Loading WASM SDK...');await kaspa.default('./kaspa/kaspa_bg.wasm');log('SDK: '+kaspa.version());initWallet();}catch(e){log('SDK error: '+String(e));setStatus('SDK FAILED','err');}
+
+async function connect(){
+  const attempts=[{label:'public mainnet',method:'resolver',net:'mainnet'},{label:'public mainnet (retry)',method:'resolver',net:'mainnet'},{label:'public mainnet (retry 2)',method:'resolver',net:'mainnet'}];
+  for(const a of attempts){try{log('Trying '+a.label+'...');setStatus('CONNECTING...','off');let client;
+    if(a.method==='direct'){client=new kaspa.RpcClient({url:a.url,networkId:a.net});await Promise.race([client.connect(),new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),5000))]);}
+    else{const resolver=new kaspa.Resolver();client=await Promise.race([resolver.connect(a.net),new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),12000))]);}
+    const info=await client.getServerInfo();if(a.net!==EXPECTED_NET){log('BLOCKED: connected to '+a.net+' but expected '+EXPECTED_NET);client.disconnect();continue;}log('Connected! synced='+info.isSynced);rpc=client;currentNet=a.net;address=privateKey.toKeypair().toAddress(a.net);
+    $('w-addr').textContent=address.toString();$('w-net').textContent=a.net+(a.method==='direct'?' (local)':'');setStatus(a.net.toUpperCase()+' LIVE','on');await refreshBalance();return;
+  }catch(e){log(a.label+': '+String(e))}}setStatus('OFFLINE','err');log('No connection — try again later');
+}
+connect();
+
+function getApiBase(){if(currentNet==='mainnet')return'https://api.kaspa.org';if(currentNet==='testnet-10')return'https://api-tn10.kaspa.org';if(currentNet==='testnet-11')return'https://api-tn11.kaspa.org';return null;}
+
+async function checkProofHistory(proofAddr){
+  const api=getApiBase();if(!api)return null;
+  try{
+    const c1=new AbortController();const t1=setTimeout(()=>c1.abort(),10000);
+    const cR=await fetch(`${api}/addresses/${proofAddr}/transactions-count`,{signal:c1.signal});clearTimeout(t1);
+    if(!cR.ok)throw new Error('API '+cR.status);const cD=await cR.json();const count=(typeof cD.total==='number')?cD.total:0;
+    if(count===0)return{found:false,count:0};
+    /* Fetch OLDEST transaction (the actual stamp, not reclaim) */
+    const oldestOffset=Math.max(0,count-1);
+    const c2=new AbortController();const t2=setTimeout(()=>c2.abort(),10000);
+    const tR=await fetch(`${api}/addresses/${proofAddr}/full-transactions?limit=1&offset=${oldestOffset}&resolve_previous_outpoints=light`,{signal:c2.signal});clearTimeout(t2);
+    if(!tR.ok)throw new Error('TX API '+tR.status);const txs=await tR.json();let stampTime=null,txId=null,blockHash=null;
+    if(Array.isArray(txs)&&txs.length>0&&txs[0]){if(typeof txs[0].transaction_id==='string')txId=txs[0].transaction_id;if(txs[0].block_time)stampTime=new Date(Number(txs[0].block_time)).toISOString();if(txs[0].accepting_block_hash)blockHash=txs[0].accepting_block_hash;}
+    return{found:true,count,txId,stampTime,blockHash};
+  }catch(e){log('REST API check failed: '+String(e));return null;}
+}
+function explorerUrl(txId){if(currentNet==='mainnet')return'https://kaspa.stream/transactions/'+txId;if(currentNet==='testnet-10')return'https://tn10.kaspa.stream/transactions/'+txId;return null;}
+
+function fz(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB'}
+function sanitize(s){return s.replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]))}
+window.sw=function(t){document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('on',['stamp','verify'][i]===t));document.querySelectorAll('.pnl').forEach(el=>el.classList.toggle('on',el.id==='tp-'+t))};
+function setupDZ(dz,fi,fn){['dragenter','dragover'].forEach(e=>dz.addEventListener(e,ev=>{ev.preventDefault();dz.classList.add('over')}));['dragleave','drop'].forEach(e=>dz.addEventListener(e,ev=>{ev.preventDefault();dz.classList.remove('over')}));dz.addEventListener('drop',ev=>{if(ev.dataTransfer.files.length)fn(ev.dataTransfer.files[0])});fi.addEventListener('change',()=>{if(fi.files.length)fn(fi.files[0])});}
+
+let sFile,sHash,sProofAddr;
+async function onStampFile(file){
+  sFile=file;try{sHash=await hashFile(file);}catch(e){$('s-info').innerHTML=`<div class="info e"><strong>Error:</strong> ${sanitize(String(e))}</div>`;return;}
+  $('dz-s').classList.add('has');const ext=sanitize(file.name.includes('.')?file.name.split('.').pop().toUpperCase():'FILE');
+  $('dz-sc').innerHTML=`<div class="dz-f">📄 ${ext} · ${fz(file.size)}<span class="x" onclick="event.stopPropagation();window.clrS()">✕</span></div>`;
+  sProofAddr=deriveProofAddress(sHash);
+  $('s-info').innerHTML=`<div class="hb"><div class="l">SHA-256 Fingerprint</div><button class="cp" onclick="navigator.clipboard.writeText('${sHash}')">copy</button>${sHash}</div><div class="hb" style="margin-top:8px"><div class="l">Proof Address (derived from hash)</div><button class="cp" onclick="navigator.clipboard.writeText('${sProofAddr.toString()}')">copy</button>${sProofAddr.toString()}</div><div class="info" style="margin-top:8px">This address IS your file, mathematically derived from its hash. Stamping costs <strong>3 KAS</strong>: 2 KAS to miners, 1 KAS protocol fee, 0.2 KAS proof dust (reclaimable). Anyone can verify by re-hashing the file.</div>`;
+  $('s-acts').style.display='flex';$('s-res').innerHTML='';
+}
+window.clrS=function(){sFile=sHash=sProofAddr=null;$('dz-s').classList.remove('has');$('dz-sc').innerHTML='<div class="dz-i">📄</div><div class="dz-t"><strong>Drop any file to stamp</strong><br/>image, document, contract, anything</div>';$('s-info').innerHTML='';$('s-acts').style.display='none';$('s-res').innerHTML='';$('fi-s').value='';};
+setupDZ($('dz-s'),$('fi-s'),onStampFile);
+
+window.doStamp=async function(){
+  if(!sFile||!sHash||!sProofAddr)return;if(!rpc){$('s-res').innerHTML='<div class="info e"><strong>Not connected.</strong> Waiting for network...</div>';return;}
+  const btn=$('btn-stamp');btn.disabled=true;btn.textContent='⛏ Stamping...';log('Stamping: '+sHash.slice(0,16)+'...');log('Proof address: '+sProofAddr.toString());
+  try{const addr=address.toString();const proofAddr=sProofAddr.toString();
+    const history=await checkProofHistory(proofAddr);
+    if(history&&history.found){const when=history.stampTime?' on '+new Date(history.stampTime).toLocaleDateString():'';$('s-res').innerHTML=`<div class="info w"><strong>Already stamped${when}!</strong> This file already has ${history.count} transaction(s) on the Kaspa DAG.</div>`;btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';return;}
+    if(history===null){const existing=await rpc.getUtxosByAddresses([proofAddr]);if(existing.entries&&existing.entries.length>0){$('s-res').innerHTML=`<div class="info w"><strong>Already stamped!</strong> This file already has a proof on the Kaspa DAG.</div>`;btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';return;}}
+    const{entries}=await rpc.getUtxosByAddresses([addr]);if(!entries.length)throw new Error('No funds — send some KAS to your wallet address first');
+    entries.sort((a,b)=>a.amount>b.amount?1:-1);log(entries.length+' UTXOs, creating tx...');
+    const amount=20000000n;let txId='';let lastErr=null;let inscribed=false;const feeLevels=[200000000n,250000000n,300000000n];
+    const payloadHex=buildKpp1Payload(sHash);log('KPP-1 payload: '+payloadHex.length/2+' bytes');log('Stamp: 0.2 proof + 1 KAS maker + 2 KAS miners = 3.2 KAS');
+    for(const pFee of feeLevels){try{if(pFee>200000000n)log('Retrying with priority fee '+(Number(pFee)/100000000)+' KAS...');
+      const res=await stampWithPayload(entries,proofAddr,addr,pFee,payloadHex,[privateKey]);
+      txId=res.txId;inscribed=res.inscribed;lastErr=null;break;
+    }catch(e){lastErr=e;log('TX attempt failed: '+String(e));const msg=String(e).toLowerCase();if(msg.includes('no funds')||msg.includes('insufficient')||msg.includes('not connected')||msg.includes('no entries'))throw e;}}
+    if(lastErr)throw lastErr;await refreshBalance();
+    const receipt={kasproof:'v7',protocol:'kpp-1',fileHash:sHash,algo:'sha256',proofAddress:proofAddr,transactionId:txId,timestamp:new Date().toISOString(),network:currentNet,inscribed:inscribed};
+    const blob=new Blob([JSON.stringify(receipt,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);
+    const kppBadge=inscribed?'<div class="cr"><span class="k">Protocol</span><span class="v" style="color:var(--kas)">KPP-1 (inscribed on-chain)</span></div>':'<div class="cr"><span class="k">Protocol</span><span class="v" style="color:var(--amb)">KPP-1 (address-verified only)</span></div>';
+    $('s-res').innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">STAMPED ON KASPA</div><div class="vd-b">Real transaction. Immutable. Unforgeable. 2 KAS to miners.</div></div></div><div class="cert"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${sHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr}</span></div><div class="cr"><span class="k">Transaction</span><span class="v" style="font-size:10px"><a href="${explorerUrl(txId)}" target="_blank" style="color:var(--kas)">${txId}</a></span></div>${kppBadge}<div class="cr"><span class="k">Network</span><span class="v" style="color:var(--kas)">${currentNet} (ON-CHAIN)</span></div></div><div class="acts" style="margin-top:12px"><a href="${url}" download="kasproof-${sHash.slice(0,8)}.kasproof" class="btn bp" style="text-decoration:none">⬇ Download receipt</a><button class="btn bs" onclick="reclaimDust('${sHash}',this)">↩ Reclaim 0.2 KAS dust</button><a href="${explorerUrl(txId)}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div><div class="info" style="margin-top:12px"><strong>Anyone can verify this file</strong> by dropping it in the Verify tab. No receipt needed. The Kaspa DAG is the proof.</div>`;
+  }catch(e){log('STAMP ERROR: '+String(e));$('s-res').innerHTML=`<div class="info e"><strong>Error:</strong> ${sanitize(String(e))}</div>`;}
+  btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';
+};
+
+/* ═══ RECLAIM DUST — sweep proof address back to user wallet ═══ */
+window.reclaimDust=async function(fileHash,btnEl){
+  if(!rpc){log('Not connected');return;}
+  if(btnEl){btnEl.disabled=true;btnEl.textContent='Reclaiming...';}
+  try{
+    const proofKey=new kaspa.PrivateKey(fileHash);
+    const proofAddr=proofKey.toKeypair().toAddress(currentNet).toString();
+    const userAddr=address.toString();
+    const proofUtxos=await rpc.getUtxosByAddresses([proofAddr]);
+    if(!proofUtxos.entries||!proofUtxos.entries.length){log('Already empty');if(btnEl){btnEl.textContent='Already empty';btnEl.disabled=true;}return;}
+    let dust=0n;for(const e of proofUtxos.entries)dust+=e.amount;
+    log('Reclaiming '+(Number(dust)/100000000)+' KAS...');
+    const userUtxos=await rpc.getUtxosByAddresses([userAddr]);
+    const allEntries=[...proofUtxos.entries,...(userUtxos.entries||[])];
+    const result=await kaspa.createTransactions({networkId:currentNet,entries:allEntries,outputs:[{address:userAddr,amount:dust}],priorityFee:0n,changeAddress:userAddr});
+    for(const pending of result.transactions){await pending.sign([proofKey,privateKey]);const txId=await pending.submit(rpc);log('Reclaimed! TX: '+txId);}
+    await refreshBalance();if(btnEl){btnEl.textContent='✓ Reclaimed!';btnEl.disabled=true;}
+  }catch(e){log('Reclaim: '+String(e));if(btnEl){btnEl.textContent='Failed';btnEl.disabled=false;}}
+};
+
+async function onVerifyFile(file){
+  $('dz-v').classList.add('has');const ext=sanitize(file.name.includes('.')?file.name.split('.').pop().toUpperCase():'FILE');
+  $('dz-vc').innerHTML=`<div class="dz-f">🔍 ${ext} · ${fz(file.size)}<span class="x" onclick="event.stopPropagation();window.clrV()">✕</span></div>`;
+  const res=$('v-res');res.innerHTML='<div class="info">Hashing file and checking Kaspa DAG...</div>';
+  try{const fileHash=await hashFile(file);const proofAddr=deriveProofAddress(fileHash);log('Verify: '+fileHash.slice(0,16)+'... → '+proofAddr.toString().slice(0,24)+'...');
+    if(!rpc&&!getApiBase()){res.innerHTML=`<div class="cert"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div></div><div class="info w" style="margin-top:10px"><strong>Offline.</strong> Connect to Kaspa to check.</div>`;return;}
+    const history=await checkProofHistory(proofAddr.toString());let verified=false,txCount=0,stampTime=null,firstTxId=null,blockHash=null,utxoBalance=null;
+    if(history&&history.found){verified=true;txCount=history.count;stampTime=history.stampTime;firstTxId=history.txId;blockHash=history.blockHash;log('VERIFIED via REST API — '+txCount+' transaction(s)');}
+    else if(history===null&&rpc){log('REST API unavailable, UTXO fallback...');const{entries}=await rpc.getUtxosByAddresses([proofAddr.toString()]);if(entries&&entries.length>0){verified=true;txCount=entries.length;let total=0n;for(const e of entries)total+=e.amount;utxoBalance=(Number(total)/100000000).toFixed(8);log('VERIFIED via UTXO — '+entries.length);}}
+    if(verified){
+      const timeInfo=stampTime?`<div class="cr"><span class="k">First Stamped</span><span class="v" style="color:var(--kas)">${new Date(stampTime).toLocaleString()}</span></div>`:'';
+      const txInfo=firstTxId?`<div class="cr"><span class="k">Transaction</span><span class="v" style="font-size:10px"><a href="${explorerUrl(firstTxId)}" target="_blank" style="color:var(--kas)">${firstTxId}</a></span></div>`:'';
+      const blockInfo=blockHash?`<div class=\"cr\"><span class=\"k\">Block</span><span class=\"v\" style=\"font-size:10px\">${blockHash.slice(0,16)}...</span></div>`:'';
+      const balInfo=utxoBalance?`<div class="cr"><span class="k">On-chain Balance</span><span class="v" style="color:var(--kas)">${utxoBalance} KAS</span></div>`:'';
+      const methodNote=history&&history.found?'Transaction history is permanent — this proof survives even if the dust is spent.':'Verified via UTXO. History API was unavailable.';
+      res.innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">VERIFIED: FILE IS STAMPED ON KASPA</div><div class="vd-b">This exact file has been timestamped on the Kaspa BlockDAG. The proof is mathematically unforgeable.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived from hash</span></div><div class="ck p"><div class="ci">✓</div><span>${txCount} transaction(s) found in DAG history</span></div><div class="ck p"><div class="ci">✓</div><span>Proof is immutable on Kaspa DAG</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div>${timeInfo}${txInfo}${balInfo}${blockInfo}</div><div class="info" style="margin-top:12px"><strong>This proof is permanent.</strong> ${methodNote}</div><div class="acts" style="margin-top:12px"><button class="btn bs" onclick="reclaimDust('${fileHash}',this)">↩ Reclaim dust from proof address</button><a href="${firstTxId?explorerUrl(firstTxId):'#'}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div>`;
+    }else{
+      log('Not found — no transactions');
+      res.innerHTML=`<div class="vd warn"><div class="vd-i">⚠</div><div><div class="vd-title">NOT STAMPED</div><div class="vd-b">This file has no proof on the Kaspa DAG.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived</span></div><div class="ck f"><div class="ci">✕</div><span>No transactions found in history</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div></div><div class="info" style="margin-top:12px"><strong>No proof exists for this file.</strong> If you expected this file to be stamped, it may have been modified — even a single byte change produces a completely different hash and proof address.</div>`;
+    }
+  }catch(e){log('Verify error: '+String(e));res.innerHTML=`<div class="info e"><strong>Error:</strong> ${sanitize(String(e))}</div>`;}
+}
+window.clrV=function(){$('dz-v').classList.remove('has');$('dz-vc').innerHTML='<div class="dz-i">🔍</div><div class="dz-t"><strong>Drop any file to verify</strong><br/>no certificate needed. The chain is the proof</div>';$('v-res').innerHTML='';$('fi-v').value='';};
+setupDZ($('dz-v'),$('fi-v'),onVerifyFile);
+</script>
+<script>
+(function(){
+  const c=document.getElementById('bgc');if(!c)return;
+  const ctx=c.getContext('2d');
+  const KAS='rgba(73,234,203,',GOLD='rgba(240,192,64,',BLUE='rgba(100,180,252,';
+  const isMob='ontouchstart' in window;
+  const CONN=210;
+  let W=0,H=0,pts=[];
+  function resize(){W=window.innerWidth;H=window.innerHeight;c.width=W;c.height=H;}
+  class P{constructor(){this.reset();}
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.ph=Math.random()*6.28;this.sp=.005+Math.random()*.012;const r=Math.random();if(r<.68){this.col=KAS;this.r=2+Math.random()*1.6;}else if(r<.86){this.col=GOLD;this.r=1.6+Math.random()*1.2;}else{this.col=BLUE;this.r=1.4+Math.random();}}
+    update(){this.x+=this.vx;this.y+=this.vy;this.ph+=this.sp;if(this.x<-70||this.x>W+70||this.y<-70||this.y>H+70)this.reset();}
+    draw(){const a=.38+.3*Math.sin(this.ph);ctx.beginPath();ctx.arc(this.x,this.y,this.r*4,0,6.28);ctx.fillStyle=this.col+(a*.12)+')';ctx.fill();ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,6.28);ctx.fillStyle=this.col+a+')';ctx.fill();}
+  }
+  function mk(){const n=isMob?Math.min(20,Math.floor(W*H/25000)):Math.min(100,Math.floor(W*H/12000));pts=Array.from({length:n},()=>new P());}
+  function conns(){for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d>=CONN)continue;const int=1-d/CONN;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=KAS+(int*.28)+')';ctx.lineWidth=int*1.6;ctx.stroke();}}
+  function frame(){ctx.clearRect(0,0,W,H);conns();pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(frame);}
+  resize();mk();window.addEventListener('resize',()=>{resize();mk();});frame();
+})();
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("vis")})},{threshold:.12});document.querySelectorAll(".rv").forEach(function(el){obs.observe(el)});
+</script>
+<script>
+(function(){const d=document.getElementById('cur'),r=document.getElementById('cur-r');if(!d||!r||window.innerWidth<768)return;let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.left=mx+'px';d.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.tab,.dz,.btn').forEach(el=>{el.addEventListener('mouseenter',()=>{r.style.width='48px';r.style.height='48px';r.style.borderColor='rgba(73,234,203,.6)';});el.addEventListener('mouseleave',()=>{r.style.width='32px';r.style.height='32px';r.style.borderColor='rgba(73,234,203,.35)';});});
+})();
+</script>
+</body>
 </html>
