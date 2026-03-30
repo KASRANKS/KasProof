@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>KASPROOF</title>
+<title>KASPROOF. Proof of Existence on Kaspa</title>
 <meta name="description" content="Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No trust. Pure math."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -215,7 +215,7 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
   <p class="section-sub">Three steps. No middlemen. Your file never leaves your device. Only its mathematical fingerprint touches the blockchain.</p>
   <div class="steps">
     <div class="step"><div class="step-num">01</div><div class="step-icon">🔐</div><div class="step-title">Hash</div><div class="step-desc">Your file is SHA-256 hashed locally in your browser. The hash is a unique fingerprint. Change one byte and the entire hash changes. Your file is never uploaded anywhere.</div></div>
-    <div class="step"><div class="step-num">02</div><div class="step-icon">⛏</div><div class="step-title">Stamp</div><div class="step-desc">The hash becomes a Kaspa address through deterministic key derivation. A stamp transaction (3 KAS) is sent: 2 KAS to miners, 1 KAS protocol fee, 0.2 KAS proof dust. The timestamp is set by the Kaspa network, not by you.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-icon">⛏</div><div class="step-title">Stamp</div><div class="step-desc">The hash becomes a Kaspa address through deterministic key derivation. A stamp transaction is sent: 2 KAS to miners, 1 KAS protocol fee, 0.2 KAS proof deposit (auto-returned). Net cost: 3 KAS. The timestamp is set by the Kaspa network, not by you.</div></div>
     <div class="step"><div class="step-num">03</div><div class="step-icon">🔍</div><div class="step-title">Verify</div><div class="step-desc">Anyone can drop the same file, derive the same address, and check if it has transactions. If yes, the file was stamped. The date is permanent and unforgeable.</div></div>
   </div>
 </div></section>
@@ -295,9 +295,9 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
   <div class="sec-grid">
     <div class="sec-card"><div class="sc-icon">🔐</div><h4>Client-side hashing</h4><p>Your file is hashed with SHA-256 in the browser via the Web Crypto API. The file never leaves your device. Not even a byte.</p></div>
     <div class="sec-card"><div class="sc-icon">🧮</div><h4>Deterministic derivation</h4><p>File hash → private key → Kaspa address. Same file always produces the same address. Different file = different address. Pure math.</p></div>
-    <div class="sec-card"><div class="sc-icon">📡</div><h4>Transaction history</h4><p>Verification checks the permanent transaction history via the Kaspa REST API, not just the current balance. Proof survives even if the dust is spent.</p></div>
+    <div class="sec-card"><div class="sc-icon">📡</div><h4>Transaction history</h4><p>Verification checks the permanent transaction history via the Kaspa REST API, not just the current balance. Proof survives even if the proof deposit is spent.</p></div>
     <div class="sec-card"><div class="sc-icon">⚡</div><h4>Adaptive fees</h4><p>If the network is busy, the priority fee bumps automatically. Stamps don't fail during high traffic, they just cost a fraction more.</p></div>
-    <div class="sec-card"><div class="sc-icon">👁️</div><h4>Zero personal data</h4><p>No accounts. No emails. No tracking. No analytics. The wallet key lives in your browser's localStorage — nowhere else.</p></div>
+    <div class="sec-card"><div class="sc-icon">👁️</div><h4>Zero personal data</h4><p>No accounts. No emails. No tracking. No analytics. The wallet key lives in your browser's localStorage. Nowhere else.</p></div>
     <div class="sec-card"><div class="sc-icon">🛡️</div><h4>Audited codebase</h4><p>XSS-sanitized logs. Timeout-protected API calls. File size guards. Response validation. Open source. Read every line.</p></div>
   </div>
 </div></section>
@@ -372,7 +372,7 @@ function initWallet(){
   $('w-addr').textContent=address.toString();$('w-net').textContent=currentNet;$('wk-val').textContent=saved;$('wallet-bar').style.display='block';log('Wallet: '+address.toString());
 }
 window.toggleKey=function(w){const exp=$('wk-export'),imp=$('wk-import');if(w==='export'){exp.style.display=exp.style.display==='none'?'block':'none';imp.style.display='none'}if(w==='import'){imp.style.display=imp.style.display==='none'?'block':'none';exp.style.display='none'}};
-window.importKey=function(){const val=$('wk-input').value.trim();if(val.length!==64||!/^[0-9a-fA-F]+$/.test(val)){alert('Invalid — need 64 hex characters');return}if(!confirm('Replace current wallet? Make sure you backed up your current key first.')){return}localStorage.setItem('kasproof_pk',val);location.reload();};
+window.importKey=function(){const val=$('wk-input').value.trim();if(val.length!==64||!/^[0-9a-fA-F]+$/.test(val)){alert('Invalid. Need 64 hex characters');return}if(!confirm('Replace current wallet? Make sure you backed up your current key first.')){return}localStorage.setItem('kasproof_pk',val);location.reload();};
 window.refreshBalance=async function(){if(!rpc||!address)return;try{const{entries}=await rpc.getUtxosByAddresses([address.toString()]);let total=0n;for(const e of entries)total+=e.amount;const kas=Number(total)/100000000;$('w-bal').textContent=kas.toFixed(8)+' KAS';$('w-bal').className='v'+(kas===0?' warn':'');if(kas===0)log('Balance: 0 — fund this address');}catch(e){$('w-bal').textContent='error';log('Balance: '+String(e))}};
 
 try{log('Loading WASM SDK...');await kaspa.default('./kaspa/kaspa_bg.wasm');log('SDK: '+kaspa.version());initWallet();}catch(e){log('SDK error: '+String(e));setStatus('SDK FAILED','err');}
@@ -419,7 +419,7 @@ async function onStampFile(file){
   $('dz-s').classList.add('has');const ext=sanitize(file.name.includes('.')?file.name.split('.').pop().toUpperCase():'FILE');
   $('dz-sc').innerHTML=`<div class="dz-f">📄 ${ext} · ${fz(file.size)}<span class="x" onclick="event.stopPropagation();window.clrS()">✕</span></div>`;
   sProofAddr=deriveProofAddress(sHash);
-  $('s-info').innerHTML=`<div class="hb"><div class="l">SHA-256 Fingerprint</div><button class="cp" onclick="navigator.clipboard.writeText('${sHash}')">copy</button>${sHash}</div><div class="hb" style="margin-top:8px"><div class="l">Proof Address (derived from hash)</div><button class="cp" onclick="navigator.clipboard.writeText('${sProofAddr.toString()}')">copy</button>${sProofAddr.toString()}</div><div class="info" style="margin-top:8px">This address IS your file, mathematically derived from its hash. Stamping costs <strong>3 KAS</strong>: 2 KAS to miners, 1 KAS protocol fee, 0.2 KAS proof dust (reclaimable). Anyone can verify by re-hashing the file.</div>`;
+  $('s-info').innerHTML=`<div class="hb"><div class="l">SHA-256 Fingerprint</div><button class="cp" onclick="navigator.clipboard.writeText('${sHash}')">copy</button>${sHash}</div><div class="hb" style="margin-top:8px"><div class="l">Proof Address (derived from hash)</div><button class="cp" onclick="navigator.clipboard.writeText('${sProofAddr.toString()}')">copy</button>${sProofAddr.toString()}</div><div class="info" style="margin-top:8px">This address IS your file, mathematically derived from its hash. Stamping costs <strong>3 KAS</strong>: 2 KAS to miners, 1 KAS protocol fee. A 0.2 KAS proof deposit is sent and auto-returned to your wallet. Anyone can verify by re-hashing the file.</div>`;
   $('s-acts').style.display='flex';$('s-res').innerHTML='';
 }
 window.clrS=function(){sFile=sHash=sProofAddr=null;$('dz-s').classList.remove('has');$('dz-sc').innerHTML='<div class="dz-i">📄</div><div class="dz-t"><strong>Drop any file to stamp</strong><br/>image, document, contract, anything</div>';$('s-info').innerHTML='';$('s-acts').style.display='none';$('s-res').innerHTML='';$('fi-s').value='';};
@@ -432,10 +432,10 @@ window.doStamp=async function(){
     const history=await checkProofHistory(proofAddr);
     if(history&&history.found){const when=history.stampTime?' on '+new Date(history.stampTime).toLocaleDateString():'';$('s-res').innerHTML=`<div class="info w"><strong>Already stamped${when}!</strong> This file already has ${history.count} transaction(s) on the Kaspa DAG.</div>`;btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';return;}
     if(history===null){const existing=await rpc.getUtxosByAddresses([proofAddr]);if(existing.entries&&existing.entries.length>0){$('s-res').innerHTML=`<div class="info w"><strong>Already stamped!</strong> This file already has a proof on the Kaspa DAG.</div>`;btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';return;}}
-    const{entries}=await rpc.getUtxosByAddresses([addr]);if(!entries.length)throw new Error('No funds — send some KAS to your wallet address first');
+    const{entries}=await rpc.getUtxosByAddresses([addr]);if(!entries.length)throw new Error('No funds. Send some KAS to your wallet address first');
     entries.sort((a,b)=>a.amount>b.amount?1:-1);log(entries.length+' UTXOs, creating tx...');
     const amount=20000000n;let txId='';let lastErr=null;let inscribed=false;const feeLevels=[200000000n,250000000n,300000000n];
-    const payloadHex=buildKpp1Payload(sHash);log('KPP-1 payload: '+payloadHex.length/2+' bytes');log('Stamp: 0.2 proof + 1 KAS maker + 2 KAS miners = 3.2 KAS');
+    const payloadHex=buildKpp1Payload(sHash);log('KPP-1 payload: '+payloadHex.length/2+' bytes');log('Stamp: 0.2 proof deposit + 1 KAS fee + 2 KAS miners = ~3 KAS net');
     for(const pFee of feeLevels){try{if(pFee>200000000n)log('Retrying with priority fee '+(Number(pFee)/100000000)+' KAS...');
       const res=await stampWithPayload(entries,proofAddr,addr,pFee,payloadHex,[privateKey]);
       txId=res.txId;inscribed=res.inscribed;lastErr=null;break;
@@ -444,7 +444,8 @@ window.doStamp=async function(){
     const receipt={kasproof:'v7',protocol:'kpp-1',fileHash:sHash,algo:'sha256',proofAddress:proofAddr,transactionId:txId,timestamp:new Date().toISOString(),network:currentNet,inscribed:inscribed};
     const blob=new Blob([JSON.stringify(receipt,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);
     const kppBadge=inscribed?'<div class="cr"><span class="k">Protocol</span><span class="v" style="color:var(--kas)">KPP-1 (inscribed on-chain)</span></div>':'<div class="cr"><span class="k">Protocol</span><span class="v" style="color:var(--amb)">KPP-1 (address-verified only)</span></div>';
-    $('s-res').innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">STAMPED ON KASPA</div><div class="vd-b">Real transaction. Immutable. Unforgeable. 2 KAS to miners.</div></div></div><div class="cert"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${sHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr}</span></div><div class="cr"><span class="k">Transaction</span><span class="v" style="font-size:10px"><a href="${explorerUrl(txId)}" target="_blank" style="color:var(--kas)">${txId}</a></span></div>${kppBadge}<div class="cr"><span class="k">Network</span><span class="v" style="color:var(--kas)">${currentNet} (ON-CHAIN)</span></div></div><div class="acts" style="margin-top:12px"><a href="${url}" download="kasproof-${sHash.slice(0,8)}.kasproof" class="btn bp" style="text-decoration:none">⬇ Download receipt</a><button class="btn bs" onclick="reclaimDust('${sHash}',this)">↩ Reclaim 0.2 KAS dust</button><a href="${explorerUrl(txId)}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div><div class="info" style="margin-top:12px"><strong>Anyone can verify this file</strong> by dropping it in the Verify tab. No receipt needed. The Kaspa DAG is the proof.</div>`;
+    $('s-res').innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">STAMPED ON KASPA</div><div class="vd-b">Real transaction. Immutable. Unforgeable. 2 KAS to miners.</div></div></div><div class="cert"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${sHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr}</span></div><div class="cr"><span class="k">Transaction</span><span class="v" style="font-size:10px"><a href="${explorerUrl(txId)}" target="_blank" style="color:var(--kas)">${txId}</a></span></div>${kppBadge}<div class="cr"><span class="k">Network</span><span class="v" style="color:var(--kas)">${currentNet} (ON-CHAIN)</span></div></div><div class="acts" style="margin-top:12px"><a href="${url}" download="kasproof-${sHash.slice(0,8)}.kasproof" class="btn bp" style="text-decoration:none">⬇ Download receipt</a><a href="${explorerUrl(txId)}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div><div class="info" style="margin-top:12px"><strong>Anyone can verify this file</strong> by dropping it in the Verify tab. No receipt needed. The Kaspa DAG is the proof.</div>`;
+  autoReclaimDust(sHash);
   }catch(e){log('STAMP ERROR: '+String(e));$('s-res').innerHTML=`<div class="info e"><strong>Error:</strong> ${sanitize(String(e))}</div>`;}
   btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';
 };
@@ -469,6 +470,36 @@ window.reclaimDust=async function(fileHash,btnEl){
   }catch(e){log('Reclaim: '+String(e));if(btnEl){btnEl.textContent='Failed';btnEl.disabled=false;}}
 };
 
+/* Auto-reclaim: called silently after stamp. Retries up to 3x waiting for UTXO to land. */
+async function autoReclaimDust(fileHash){
+  const delays=[2500,4000,6000];
+  for(let i=0;i<delays.length;i++){
+    await new Promise(r=>setTimeout(r,delays[i]));
+    try{
+      const proofKey=new kaspa.PrivateKey(fileHash);
+      const proofAddr=proofKey.toKeypair().toAddress(currentNet).toString();
+      const proofUtxos=await rpc.getUtxosByAddresses([proofAddr]);
+      if(!proofUtxos.entries||!proofUtxos.entries.length){log('Auto-reclaim: UTXO not landed yet, retry '+(i+1));continue;}
+      let dust=0n;for(const e of proofUtxos.entries)dust+=e.amount;
+      const userAddr=address.toString();
+      const userUtxos=await rpc.getUtxosByAddresses([userAddr]);
+      const allEntries=[...proofUtxos.entries,...(userUtxos.entries||[])];
+      const result=await kaspa.createTransactions({networkId:currentNet,entries:allEntries,outputs:[{address:userAddr,amount:dust}],priorityFee:0n,changeAddress:userAddr});
+      for(const pending of result.transactions){await pending.sign([proofKey,privateKey]);const txId=await pending.submit(rpc);log('Auto-reclaim OK: '+txId);}
+      await refreshBalance();return;
+    }catch(e){log('Auto-reclaim attempt '+(i+1)+': '+String(e));}
+  }
+  log('Auto-reclaim failed, showing manual button');
+  const actDiv=document.querySelector('#s-res .acts');
+  if(actDiv&&!actDiv.querySelector('.reclaim-btn')){
+    const btn=document.createElement('button');
+    btn.className='btn bs reclaim-btn';
+    btn.textContent='↩ Reclaim 0.2 KAS';
+    btn.onclick=function(){window.reclaimDust(fileHash,btn);};
+    actDiv.insertBefore(btn,actDiv.children[1]||null);
+  }
+}
+
 async function onVerifyFile(file){
   $('dz-v').classList.add('has');const ext=sanitize(file.name.includes('.')?file.name.split('.').pop().toUpperCase():'FILE');
   $('dz-vc').innerHTML=`<div class="dz-f">🔍 ${ext} · ${fz(file.size)}<span class="x" onclick="event.stopPropagation();window.clrV()">✕</span></div>`;
@@ -483,11 +514,11 @@ async function onVerifyFile(file){
       const txInfo=firstTxId?`<div class="cr"><span class="k">Transaction</span><span class="v" style="font-size:10px"><a href="${explorerUrl(firstTxId)}" target="_blank" style="color:var(--kas)">${firstTxId}</a></span></div>`:'';
       const blockInfo=blockHash?`<div class=\"cr\"><span class=\"k\">Block</span><span class=\"v\" style=\"font-size:10px\">${blockHash.slice(0,16)}...</span></div>`:'';
       const balInfo=utxoBalance?`<div class="cr"><span class="k">On-chain Balance</span><span class="v" style="color:var(--kas)">${utxoBalance} KAS</span></div>`:'';
-      const methodNote=history&&history.found?'Transaction history is permanent — this proof survives even if the dust is spent.':'Verified via UTXO. History API was unavailable.';
-      res.innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">VERIFIED: FILE IS STAMPED ON KASPA</div><div class="vd-b">This exact file has been timestamped on the Kaspa BlockDAG. The proof is mathematically unforgeable.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived from hash</span></div><div class="ck p"><div class="ci">✓</div><span>${txCount} transaction(s) found in DAG history</span></div><div class="ck p"><div class="ci">✓</div><span>Proof is immutable on Kaspa DAG</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div>${timeInfo}${txInfo}${balInfo}${blockInfo}</div><div class="info" style="margin-top:12px"><strong>This proof is permanent.</strong> ${methodNote}</div><div class="acts" style="margin-top:12px"><button class="btn bs" onclick="reclaimDust('${fileHash}',this)">↩ Reclaim dust from proof address</button><a href="${firstTxId?explorerUrl(firstTxId):'#'}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div>`;
+      const methodNote=history&&history.found?'Transaction history is permanent. This proof survives even if the proof deposit is spent.':'Verified via UTXO. History API was unavailable.';
+      res.innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">VERIFIED: FILE IS STAMPED ON KASPA</div><div class="vd-b">This exact file has been timestamped on the Kaspa BlockDAG. The proof is mathematically unforgeable.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived from hash</span></div><div class="ck p"><div class="ci">✓</div><span>${txCount} transaction(s) found in DAG history</span></div><div class="ck p"><div class="ci">✓</div><span>Proof is immutable on Kaspa DAG</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div>${timeInfo}${txInfo}${balInfo}${blockInfo}</div><div class="info" style="margin-top:12px"><strong>This proof is permanent.</strong> ${methodNote}</div><div class="acts" style="margin-top:12px"><a href="${firstTxId?explorerUrl(firstTxId):'#'}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div>`;
     }else{
       log('Not found — no transactions');
-      res.innerHTML=`<div class="vd warn"><div class="vd-i">⚠</div><div><div class="vd-title">NOT STAMPED</div><div class="vd-b">This file has no proof on the Kaspa DAG.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived</span></div><div class="ck f"><div class="ci">✕</div><span>No transactions found in history</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div></div><div class="info" style="margin-top:12px"><strong>No proof exists for this file.</strong> If you expected this file to be stamped, it may have been modified — even a single byte change produces a completely different hash and proof address.</div>`;
+      res.innerHTML=`<div class="vd warn"><div class="vd-i">⚠</div><div><div class="vd-title">NOT STAMPED</div><div class="vd-b">This file has no proof on the Kaspa DAG.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived</span></div><div class="ck f"><div class="ci">✕</div><span>No transactions found in history</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div></div><div class="info" style="margin-top:12px"><strong>No proof exists for this file.</strong> If you expected this file to be stamped, it may have been modified. Even a single byte change produces a completely different hash and proof address.</div>`;
     }
   }catch(e){log('Verify error: '+String(e));res.innerHTML=`<div class="info e"><strong>Error:</strong> ${sanitize(String(e))}</div>`;}
 }
