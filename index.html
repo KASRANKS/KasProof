@@ -185,7 +185,7 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
 <div id="cur"></div><div id="cur-r"></div>
 
 <nav><div class="nav-inner">
-  <a class="logo" href="#"><div class="logo-dot"></div>KAS<span>PROOF</span></a>
+  <a class="logo" href="#"><span class="nmark"><svg class="kas-k-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;fill:var(--kas);filter:drop-shadow(0 0 14px rgba(73,234,203,.9))"><polygon points="15.3 18.9 15.3 18.9 12.7 18.5 13.4 13.4 8 17.6 6.4 15.6 11.2 11.9 6.4 8.2 8 6.2 13.4 10.4 12.7 5.3 15.3 4.9 16.3 11.9 15.3 18.9"/></svg></span>KAS<span>PROOF</span></a>
   <div class="nav-links">
     <a href="#how">How it works</a><a href="#tool">Stamp / Verify</a><a href="#proves">What it proves</a><a href="#security">Security</a>
     <div class="net-badge off" id="status">LOADING...</div>
@@ -195,7 +195,7 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
 <section id="hero"><div class="container">
   <div class="section-label">KPP · BlockDAG · PoW · Immutable</div>
   <h1 class="hero-title">Proof of existence<br/>on <em>Kaspa</em></h1>
-  <p class="hero-sub">Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No uploads. No trust. Pure math and chain.</p>
+  <p class="hero-sub">Permanently timestamp any file on the Kaspa BlockDAG. No accounts. No uploads. No trust. Cryptographically verifiable.</p>
   <a href="#tool" class="hero-cta">Stamp a file →</a>
   <div class="hero-stats">
     <div class="hstat"><div class="hstat-val"><span>1</span>s</div><div class="hstat-label">First confirm</div></div>
@@ -205,8 +205,8 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
 </div></section>
 
 <div class="ticker-wrap"><div class="ticker">
-  <span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>Transaction History</span>
-  <span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>Transaction History</span>
+  <span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>No Uploads</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>No Certificates</span><span>Transaction History</span>
+  <span>Proof of Existence</span><span>SHA-256</span><span>Kaspa BlockDAG</span><span>Unforgeable</span><span>No Uploads</span><span>Client-side Only</span><span>Privacy First</span><span>KPP-1 Protocol</span><span>Immutable</span><span>Hash-derived Addresses</span><span>No Certificates</span><span>Transaction History</span>
 </div></div>
 
 <section id="how"><div class="container rv">
@@ -252,7 +252,7 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
       </div>
       <h3>One file. One hash. One address.</h3>
       <p>Every file produces a unique SHA-256 hash. That hash becomes a unique Kaspa address. Sending any transaction to that address is your timestamp, permanently recorded on the BlockDAG.</p>
-      <p>Verification works in reverse: Hash the file, derive the address, and check its first transaction. That timestamp is your proof.</p>
+      <p>Verification works in reverse: hash the file, derive the address, check if a transaction exists. That timestamp is your proof.</p>
       <p style="color:var(--kas);font-size:13px;font-weight:600">Your file never leaves your browser. Only the hash touches the chain.</p>
       <div id="log"></div>
     </div>
@@ -278,10 +278,10 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
   <p class="section-sub">Two parties. One file. Both can verify. Neither can tamper. The DAG is the witness.</p>
   <div class="proves-grid">
     <div class="prove-card yes"><h3>✓ Immutable proof</h3><ul>
-      <li>This exact file existed at this exact date</li><li>Not a single byte has been modified since stamping</li><li>The timestamp was set by the Kaspa network. Nobody can backdate it</li><li>Both parties can independently verify the same document</li><li>Neither party can alter the file without breaking verification</li>
+      <li>This exact file existed no later than this date</li><li>Not a single byte has been modified since stamping</li><li>The timestamp was set by the Kaspa network. Nobody can backdate it</li><li>Both parties can independently verify the same document</li><li>Neither party can alter the file without breaking verification</li>
     </ul></div>
     <div class="prove-card yes"><h3>✓ Real-world use</h3><ul>
-      <li>Stamp a signed contract so both sides hold the same unbreakable proof</li><li>Prove your song, design, or code existed before anyone else claims it</li><li>Lock in an agreement with someone you don't trust. The DAG holds both accountable</li><li>Timestamp evidence, legal documents, or any file that must never change</li><li>Share a document knowing any tampering is instantly detectable</li>
+      <li>Stamp a signed contract so both sides hold the same unbreakable proof</li><li>Prove your song, design, or code existed before anyone else claims it</li><li>Timestamp an agreement so both parties hold the same verifiable record</li><li>Timestamp evidence, legal documents, or any file that must never change</li><li>Share a document knowing any tampering is instantly detectable</li>
     </ul></div>
   </div>
 </div></section>
@@ -298,13 +298,13 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
     <div class="sec-card"><div class="sc-icon">📡</div><h4>Transaction history</h4><p>Verification checks the permanent transaction history via the Kaspa REST API, not just the current balance. Proof survives even if the proof deposit is spent.</p></div>
     <div class="sec-card"><div class="sc-icon">⚡</div><h4>Adaptive fees</h4><p>If the network is busy, the priority fee bumps automatically. Stamps don't fail during high traffic, they just cost a fraction more.</p></div>
     <div class="sec-card"><div class="sc-icon">👁️</div><h4>Zero personal data</h4><p>No accounts. No emails. No tracking. No analytics. The wallet key lives in your browser's localStorage. Nowhere else.</p></div>
-    <div class="sec-card"><div class="sc-icon">🛡️</div><h4>Audited codebase</h4><p>XSS-sanitized logs. Timeout-protected API calls. File size guards. Response validation. Open source. Read every line.</p></div>
+    <div class="sec-card"><div class="sc-icon">🛡️</div><h4>Hardened codebase</h4><p>XSS-sanitized logs. Timeout-protected API calls. File size guards. Response validation. Open source. Review every line.</p></div>
   </div>
 </div></section>
 
 <footer><div class="container">
   <div class="ftr-logo">KAS<span>PROOF</span></div>
-  <p>Proof of existence on Kaspa · BlockDAG · Hash-derived addresses · Unforgeable · Privacy-first</p>
+  <p>KPP-1 · Proof of existence on Kaspa · Hash-derived addresses · BlockDAG timestamping · Client-side only</p>
   <p style="margin-top:12px"><a href="https://kaspa.org" target="_blank">kaspa.org</a> · <a href="https://x.com/Kas_Ranks" target="_blank">Follow on X</a></p>
 </div></footer>
 
