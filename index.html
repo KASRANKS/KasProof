@@ -24,7 +24,6 @@ body{min-height:100vh;overflow-x:hidden}
 ::selection{background:var(--kas);color:var(--bg)}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.022;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-
 nav{position:fixed;top:0;width:100%;z-index:200;padding:0 32px;height:60px;display:flex;align-items:center;
   background:rgba(5,8,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr)}
 .nav-inner{max-width:1100px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
@@ -39,7 +38,6 @@ nav{position:fixed;top:0;width:100%;z-index:200;padding:0 32px;height:60px;displ
 .net-badge.off{color:var(--t3);border:1px solid var(--t4)}
 .net-badge.on{color:var(--kas);border:1px solid var(--kmid);background:var(--kdim)}
 .net-badge.err{color:var(--red);border:1px solid rgba(255,77,106,.3);background:var(--rdim)}
-
 section{position:relative;z-index:1;padding:100px 32px}
 .container{max-width:1100px;margin:0 auto}
 .section-label{font-family:var(--geo);font-size:12px;color:var(--kas);letter-spacing:5px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
@@ -48,7 +46,6 @@ section{position:relative;z-index:1;padding:100px 32px}
 .section-title em{font-style:normal;color:var(--kas)}
 .section-sub{font-size:18px;color:var(--t2);line-height:1.7;max-width:560px}
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr2),transparent);margin:0 32px}
-
 #hero{padding-top:160px;padding-bottom:120px;text-align:center}
 #hero .section-label{justify-content:center}
 #hero .section-label::before{display:none}
@@ -64,13 +61,11 @@ section{position:relative;z-index:1;padding:100px 32px}
 .hstat-val{font-family:var(--syne);font-size:clamp(36px,4vw,52px);font-weight:800;color:var(--kas);letter-spacing:-2px;line-height:1;text-shadow:0 0 45px rgba(73,234,203,.55);margin-bottom:8px}
 .hstat-val span{color:var(--kas)}
 .hstat-label{font-family:var(--geo);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(230,245,239,.32)}
-
 .ticker-wrap{overflow:hidden;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:14px 0;position:relative;z-index:1}
 .ticker{display:flex;gap:48px;animation:scroll 30s linear infinite;width:max-content}
 .ticker span{font-family:var(--geo);font-size:13px;color:var(--t3);white-space:nowrap;display:flex;align-items:center;gap:8px}
 .ticker span::after{content:'◆';color:var(--kas);opacity:.3;font-size:6px}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
 .step{padding:36px 30px;background:var(--bg2);border:1px solid rgba(73,234,203,.08);border-radius:0;position:relative;transition:.3s;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
 .step:hover{border-color:rgba(73,234,203,.2);transform:translateY(-4px);box-shadow:0 0 40px rgba(73,234,203,.08)}
@@ -78,12 +73,10 @@ section{position:relative;z-index:1;padding:100px 32px}
 .step-icon{font-size:28px;margin-bottom:16px;display:block}
 .step-title{font-family:var(--syne);font-size:20px;font-weight:700;color:var(--pearl);margin-bottom:10px}
 .step-desc{font-size:15px;color:var(--t2);line-height:1.6}
-
 #tool{background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
 .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:48px}
 .tool-info h3{font-family:var(--syne);font-size:20px;font-weight:700;color:#fff;margin-bottom:12px}
 .tool-info p{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px}
-
 .wallet{padding:20px;background:rgba(2,11,17,.8);border:1px solid rgba(73,234,203,.08);border-radius:0;margin-bottom:20px}
 .w-warn{padding:12px 16px;background:var(--adim);border:1px solid rgba(255,184,77,.15);border-radius:8px;margin-bottom:12px;font-size:13px;color:var(--amb);line-height:1.6}
 .w-warn strong{color:#ffd080}
@@ -99,13 +92,11 @@ section{position:relative;z-index:1;padding:100px 32px}
 .wkey .wval{font-size:13px;word-break:break-all;color:var(--amb);line-height:1.6;filter:blur(4px);cursor:pointer;transition:.2s;font-family:var(--geo)}
 .wkey .wval:hover{filter:blur(0)}
 .wkey input{width:100%;padding:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;font-family:var(--geo);font-size:13px;color:var(--kas);outline:none;margin-top:6px}
-
 .tool-panel{background:rgba(2,11,17,.8);border:1px solid rgba(73,234,203,.1);border-radius:0;overflow:hidden;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
 .tabs{display:flex;border-bottom:1px solid var(--bdr)}
 .tab{flex:1;text-align:center;padding:14px;cursor:pointer;font-family:var(--syne);font-size:14px;font-weight:700;color:var(--t3);transition:.2s;user-select:none;border-bottom:2px solid transparent}
 .tab:hover{color:var(--t2)}.tab.on{color:var(--kas);border-bottom-color:var(--kas);background:var(--kdim)}
 .pnl{display:none;padding:24px}.pnl.on{display:block}
-
 .dz{border:2px dashed rgba(73,234,203,.15);border-radius:0;padding:44px 24px;text-align:center;cursor:pointer;transition:.3s}
 .dz:hover,.dz.over{border-color:var(--kas);background:var(--kdim)}
 .dz.has{border-color:var(--kas);border-style:solid;background:var(--kdim)}
@@ -113,23 +104,19 @@ section{position:relative;z-index:1;padding:100px 32px}
 .dz-t{font-size:15px;color:var(--t2);line-height:1.6}.dz-t strong{color:var(--txt)}
 .dz-f{margin-top:10px;padding:10px 16px;background:var(--bg2);border-radius:8px;display:inline-flex;align-items:center;gap:10px;font-family:var(--geo);font-size:13px;color:var(--kas)}
 .dz-f .x{cursor:pointer;color:var(--red);margin-left:6px;font-size:14px}
-
 .hb{margin-top:14px;padding:16px;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;font-family:var(--geo);font-size:13px;word-break:break-all;color:var(--kas);line-height:1.8;position:relative}
 .hb .l{font-size:12px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700}
 .hb .cp{position:absolute;top:10px;right:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:8px 14px;font-family:var(--geo);font-size:12px;color:var(--t3);cursor:pointer;transition:.2s}
 .hb .cp:hover{color:var(--kas)}
-
 .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:50px;font-family:var(--syne);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.3s;text-decoration:none}
 .bp{background:var(--kas);color:var(--bg);clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));border-radius:0;position:relative;overflow:hidden}.bp::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.2) 50%,transparent 60%);transform:translateX(-100%);transition:transform .5s}.bp:hover{box-shadow:0 0 80px rgba(73,234,203,.5);transform:translateY(-2px)}.bp:hover::after{transform:translateX(100%)}.bp:disabled{opacity:.15;cursor:not-allowed;box-shadow:none}
 .bs{background:transparent;color:var(--pearl);border:1px solid rgba(230,245,239,.2);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);border-radius:0}.bs:hover{border-color:rgba(230,245,239,.5);transform:translateY(-2px);box-shadow:0 0 40px rgba(230,245,239,.08)}
 .acts{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
-
 .cert{margin-top:14px;padding:18px;background:rgba(6,17,24,.9);border:1px solid rgba(73,234,203,.08);border-radius:0}
 .cr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px}
 .cr:last-child{border:none}
 .cr .k{color:var(--t2);font-family:var(--geo);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
 .cr .v{color:var(--txt);font-family:var(--geo);font-size:13px;text-align:right;max-width:56%;word-break:break-all}
-
 .vd{margin-top:14px;padding:18px;border-radius:12px;display:flex;gap:14px}
 .vd.pass{background:var(--kdim);border:1px solid rgba(73,234,203,.2)}
 .vd.fail{background:var(--rdim);border:1px solid rgba(255,77,106,.2)}
@@ -141,10 +128,8 @@ section{position:relative;z-index:1;padding:100px 32px}
 .ck{display:flex;align-items:center;gap:10px;font-family:var(--geo);font-size:13px;color:var(--t2)}
 .ck .ci{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
 .ck.p .ci{background:var(--kdim);color:var(--kas)}.ck.f .ci{background:var(--rdim);color:var(--red)}
-
 .info{margin-top:14px;padding:14px 18px;background:var(--bg2);border-radius:10px;border-left:3px solid var(--kas);font-size:14px;color:var(--t2);line-height:1.7}
 .info strong{color:var(--txt)}.info.w{border-left-color:var(--amb)}.info.e{border-left-color:var(--red)}
-
 .proves-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
 .prove-card{padding:32px 28px;border-radius:0;border:1px solid var(--bdr);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
 .prove-card.yes{background:var(--kdim);border-color:rgba(73,234,203,.15)}
@@ -154,29 +139,24 @@ section{position:relative;z-index:1;padding:100px 32px}
 .prove-card li{font-size:15px;color:var(--t2);line-height:1.8;list-style:none;padding-left:20px;position:relative}
 .prove-card.yes li::before{content:'✓';position:absolute;left:0;color:var(--kas);font-size:12px}
 .prove-card.no li::before{content:'✕';position:absolute;left:0;color:var(--red);font-size:12px}
-
 .sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
 .sec-card{padding:28px;background:var(--bg2);border:1px solid rgba(73,234,203,.06);border-radius:0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
 .sec-card .sc-icon{font-size:24px;margin-bottom:12px}
 .sec-card h4{font-family:var(--syne);font-size:16px;font-weight:700;color:var(--pearl);margin-bottom:10px}
 .sec-card p{font-size:14px;color:var(--t2);line-height:1.6}
-
 footer{position:relative;z-index:1;border-top:1px solid var(--bdr);padding:40px 32px;text-align:center}
 footer .ftr-logo{font-family:var(--syne);font-weight:800;font-size:16px;color:#fff;margin-bottom:8px}
 footer .ftr-logo span{color:var(--kas)}
 footer p{font-family:var(--geo);font-size:13px;color:var(--t3);line-height:1.8}
 footer a{color:var(--t2);text-decoration:none;transition:.2s}
 footer a:hover{color:var(--kas)}
-
 #log{margin-top:14px;padding:12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;font-family:var(--geo);font-size:12px;color:var(--t3);max-height:160px;overflow-y:auto;display:none}
-
 @media(max-width:900px){.tool-grid{grid-template-columns:1fr}.proves-grid{grid-template-columns:1fr}.sec-grid{grid-template-columns:1fr}}
 @media(max-width:700px){.steps{grid-template-columns:1fr}.hero-stats{gap:28px}.nav-links a:not(.net-badge){display:none}.cr{flex-direction:column;gap:4px;align-items:flex-start}.cr .v{text-align:left;max-width:100%}.acts{flex-direction:column}.btn{width:100%;justify-content:center}section{padding:60px 20px}}
 canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
 #cur{position:fixed;width:8px;height:8px;background:var(--kas);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;transform:translate(-50%,-50%);transition:transform .08s}
 #cur-r{position:fixed;width:32px;height:32px;border:1.5px solid rgba(73,234,203,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s}
 @media(pointer:coarse){#cur,#cur-r{display:none}}
-
 .rv{opacity:0;transform:translateY(28px);transition:all .8s cubic-bezier(.16,1,.3,1)}.rv.vis{opacity:1;transform:translateY(0)}
 </style>
 </head>
@@ -187,7 +167,7 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
 <nav><div class="nav-inner">
   <a class="logo" href="#"><span class="nmark"><svg class="kas-k-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;fill:var(--kas);filter:drop-shadow(0 0 14px rgba(73,234,203,.9))"><polygon points="15.3 18.9 15.3 18.9 12.7 18.5 13.4 13.4 8 17.6 6.4 15.6 11.2 11.9 6.4 8.2 8 6.2 13.4 10.4 12.7 5.3 15.3 4.9 16.3 11.9 15.3 18.9"/></svg></span>KAS<span>PROOF</span></a>
   <div class="nav-links">
-    <a href="#how">How it works</a><a href="#tool">Stamp / Verify</a><a href="#proves">What it proves</a><a href="#security">Security</a>
+    <a href="#how">How it works</a><a href="#guide">Guide</a><a href="#tool">Stamp / Verify</a><a href="#proves">What it proves</a><a href="#security">Security</a>
     <div class="net-badge off" id="status">LOADING...</div>
   </div>
 </div></nav>
@@ -222,6 +202,23 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 <div class="divider"></div>
 
+<section id="guide"><div class="container rv">
+  <div class="section-label">Getting started</div>
+  <h2 class="section-title">How to <em>use it</em></h2>
+  <p class="section-sub">Six steps. Two minutes. Permanent proof.</p>
+  <div class="steps" style="grid-template-columns:repeat(2,1fr)">
+    <div class="step"><div class="step-num">01</div><div class="step-icon">🌐</div><div class="step-title">Open KasProof</div><div class="step-desc">Go to kasproof.com. Your browser generates a wallet automatically. No extension, no account, no signup.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-icon">🔑</div><div class="step-title">Backup your key</div><div class="step-desc">Click "Backup key" and save it somewhere safe. This is YOUR wallet. Your key lives in your browser storage. Private browsing, clearing cookies, or switching browsers creates a new wallet. Your old KAS stays in the old wallet and is only recoverable with the key. Back up BEFORE sending any funds.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-icon">💰</div><div class="step-title">Fund your wallet</div><div class="step-desc">Send 5 to 10 KAS to the wallet address shown on the page. That is enough for few stamps. Only send what you need.</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-icon">📄</div><div class="step-title">Drop your file</div><div class="step-desc">Drop any file in the Stamp tab. Image, document, video, contract, code. Your file is hashed locally and never leaves your device.</div></div>
+    <div class="step"><div class="step-num">05</div><div class="step-icon">⛏</div><div class="step-title">Stamp it</div><div class="step-desc">Click Stamp. One transaction. 3 KAS. Your file now has a permanent, unforgeable timestamp on the Kaspa DAG.</div></div>
+    <div class="step"><div class="step-num">06</div><div class="step-icon">🔍</div><div class="step-title">Verify anytime</div><div class="step-desc">Drop the same file in the Verify tab. Same file means verified. A modified file fails verification. Anyone can verify, no receipt needed.</div></div>
+  </div>
+  <div class="info" style="margin-top:24px;max-width:720px"><strong>Protect your wallet.</strong> Your key is stored in your browser. Private or incognito browsing, clearing cookies, or switching browsers means a new wallet is generated and your old KAS stays in the old wallet. Always backup your key first. You can restore on any device with "Restore key."</div>
+</div></section>
+
+<div class="divider"></div>
+
 <section id="tool"><div class="container">
   <div class="section-label">The tool</div>
   <h2 class="section-title">Stamp & <em>Verify</em></h2>
@@ -229,7 +226,7 @@ canvas#bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
   <div class="tool-grid">
     <div class="tool-info">
       <div class="wallet" id="wallet-bar" style="display:none">
-        <div class="w-warn">⚠ <strong>Use a dedicated wallet.</strong> Do NOT import your main KAS wallet. Load only what you need for stamping (~5-10 KAS). Browser wallet = hot wallet.</div>
+        <div class="w-warn">⚠ <strong>Use a dedicated wallet.</strong> Do NOT import your main KAS wallet. Load only what you need for stamping (~5-10 KAS). Browser wallet = hot wallet. Backup your key and use the wallet below.</div>
         <div class="wr"><span class="k">Address</span><span class="v" id="w-addr">—</span></div>
         <div class="wr"><span class="k">Balance</span><span class="v" id="w-bal">—</span></div>
         <div class="wr"><span class="k">Network</span><span class="v" id="w-net">—</span></div>
@@ -328,12 +325,10 @@ function buildKpp1Payload(hash){
   return Array.from(new TextEncoder().encode(json)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 async function stampWithPayload(entries,proofAddr,changeAddr,pFee,payloadHex,signerKeys){
-  /* Outputs: 0.2 KAS → proof, 1 KAS → maker. Priority fee (2 KAS) → miners */
   const outputs=[{address:proofAddr,amount:PROOF_AMOUNT},{address:MAKER_WALLET,amount:MAKER_FEE}];
   const result=await kaspa.createTransactions({networkId:currentNet,entries:entries,outputs:outputs,priorityFee:pFee,changeAddress:changeAddr});
   let txId='';
   for(const pending of result.transactions){
-    /* Path A: set payload directly on inner Transaction */
     try{
       const tx=pending.transaction;tx.payload=payloadHex;
       kaspa.signTransaction(tx,signerKeys,true);
@@ -341,7 +336,6 @@ async function stampWithPayload(entries,proofAddr,changeAddr,pFee,payloadHex,sig
       await rpc.submitTransaction({transaction:tx,allowOrphan:false});
       txId=tx.id;log('TX LIVE (KPP-1 direct): '+txId);return{txId,inscribed:true};
     }catch(ea){log('KPP-1 path A: '+String(ea));}
-    /* Path B: serialize → inject payload → rebuild → sign → submit */
     try{
       const txObj=pending.transaction.serializeToObject();txObj.payload=payloadHex;
       const modTx=kaspa.Transaction.deserializeFromObject(txObj);
@@ -350,7 +344,6 @@ async function stampWithPayload(entries,proofAddr,changeAddr,pFee,payloadHex,sig
       await rpc.submitTransaction({transaction:modTx.serializeToObject(),allowOrphan:false});
       txId=modTx.id;log('TX LIVE (KPP-1 serialize): '+txId);return{txId,inscribed:true};
     }catch(eb){log('KPP-1 path B: '+String(eb));}
-    /* Path C: fallback — original method, no payload */
     await pending.sign(signerKeys);txId=await pending.submit(rpc);
     log('TX LIVE (no payload): '+txId);return{txId,inscribed:false};
   }
@@ -397,7 +390,6 @@ async function checkProofHistory(proofAddr){
     const cR=await fetch(`${api}/addresses/${proofAddr}/transactions-count`,{signal:c1.signal});clearTimeout(t1);
     if(!cR.ok)throw new Error('API '+cR.status);const cD=await cR.json();const count=(typeof cD.total==='number')?cD.total:0;
     if(count===0)return{found:false,count:0};
-    /* Fetch OLDEST transaction (the actual stamp, not reclaim) */
     const oldestOffset=Math.max(0,count-1);
     const c2=new AbortController();const t2=setTimeout(()=>c2.abort(),10000);
     const tR=await fetch(`${api}/addresses/${proofAddr}/full-transactions?limit=1&offset=${oldestOffset}&resolve_previous_outpoints=light`,{signal:c2.signal});clearTimeout(t2);
@@ -419,7 +411,7 @@ async function onStampFile(file){
   $('dz-s').classList.add('has');const ext=sanitize(file.name.includes('.')?file.name.split('.').pop().toUpperCase():'FILE');
   $('dz-sc').innerHTML=`<div class="dz-f">📄 ${ext} · ${fz(file.size)}<span class="x" onclick="event.stopPropagation();window.clrS()">✕</span></div>`;
   sProofAddr=deriveProofAddress(sHash);
-  $('s-info').innerHTML=`<div class="hb"><div class="l">SHA-256 Fingerprint</div><button class="cp" onclick="navigator.clipboard.writeText('${sHash}')">copy</button>${sHash}</div><div class="hb" style="margin-top:8px"><div class="l">Proof Address (derived from hash)</div><button class="cp" onclick="navigator.clipboard.writeText('${sProofAddr.toString()}')">copy</button>${sProofAddr.toString()}</div><div class="info" style="margin-top:8px">This address IS your file, mathematically derived from its hash. Stamping costs <strong>3 KAS</strong>: 2 KAS to miners, 1 KAS protocol fee. A 0.2 KAS proof deposit is sent and auto-returned to your wallet. Anyone can verify by re-hashing the file.</div>`;
+  $('s-info').innerHTML=`<div class="info" style="margin-top:8px"><strong>File ready to stamp.</strong> Cost: <strong>3 KAS</strong> (2 KAS miners + 1 KAS protocol fee). Proof deposit auto-returned. Your file never leaves your browser.</div>`;
   $('s-acts').style.display='flex';$('s-res').innerHTML='';
 }
 window.clrS=function(){sFile=sHash=sProofAddr=null;$('dz-s').classList.remove('has');$('dz-sc').innerHTML='<div class="dz-i">📄</div><div class="dz-t"><strong>Drop any file to stamp</strong><br/>image, document, contract, anything</div>';$('s-info').innerHTML='';$('s-acts').style.display='none';$('s-res').innerHTML='';$('fi-s').value='';};
@@ -450,7 +442,6 @@ window.doStamp=async function(){
   btn.disabled=false;btn.textContent='⛏ Stamp on Kaspa';
 };
 
-/* ═══ RECLAIM DUST — sweep proof address back to user wallet ═══ */
 window.reclaimDust=async function(fileHash,btnEl){
   if(!rpc){log('Not connected');return;}
   if(btnEl){btnEl.disabled=true;btnEl.textContent='Reclaiming...';}
@@ -470,7 +461,6 @@ window.reclaimDust=async function(fileHash,btnEl){
   }catch(e){log('Reclaim: '+String(e));if(btnEl){btnEl.textContent='Failed';btnEl.disabled=false;}}
 };
 
-/* Auto-reclaim: called silently after stamp. Retries up to 3x waiting for UTXO to land. */
 async function autoReclaimDust(fileHash){
   const delays=[2500,4000,6000];
   for(let i=0;i<delays.length;i++){
@@ -505,20 +495,20 @@ async function onVerifyFile(file){
   $('dz-vc').innerHTML=`<div class="dz-f">🔍 ${ext} · ${fz(file.size)}<span class="x" onclick="event.stopPropagation();window.clrV()">✕</span></div>`;
   const res=$('v-res');res.innerHTML='<div class="info">Hashing file and checking Kaspa DAG...</div>';
   try{const fileHash=await hashFile(file);const proofAddr=deriveProofAddress(fileHash);log('Verify: '+fileHash.slice(0,16)+'... → '+proofAddr.toString().slice(0,24)+'...');
-    if(!rpc&&!getApiBase()){res.innerHTML=`<div class="cert"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div></div><div class="info w" style="margin-top:10px"><strong>Offline.</strong> Connect to Kaspa to check.</div>`;return;}
+    if(!rpc&&!getApiBase()){res.innerHTML=`<div class="info w" style="margin-top:10px"><strong>Offline.</strong> Connect to Kaspa to verify this file.</div>`;return;}
     const history=await checkProofHistory(proofAddr.toString());let verified=false,txCount=0,stampTime=null,firstTxId=null,blockHash=null,utxoBalance=null;
     if(history&&history.found){verified=true;txCount=history.count;stampTime=history.stampTime;firstTxId=history.txId;blockHash=history.blockHash;log('VERIFIED via REST API — '+txCount+' transaction(s)');}
     else if(history===null&&rpc){log('REST API unavailable, UTXO fallback...');const{entries}=await rpc.getUtxosByAddresses([proofAddr.toString()]);if(entries&&entries.length>0){verified=true;txCount=entries.length;let total=0n;for(const e of entries)total+=e.amount;utxoBalance=(Number(total)/100000000).toFixed(8);log('VERIFIED via UTXO — '+entries.length);}}
     if(verified){
       const timeInfo=stampTime?`<div class="cr"><span class="k">First Stamped</span><span class="v" style="color:var(--kas)">${new Date(stampTime).toLocaleString()}</span></div>`:'';
       const txInfo=firstTxId?`<div class="cr"><span class="k">Transaction</span><span class="v" style="font-size:10px"><a href="${explorerUrl(firstTxId)}" target="_blank" style="color:var(--kas)">${firstTxId}</a></span></div>`:'';
-      const blockInfo=blockHash?`<div class=\"cr\"><span class=\"k\">Block</span><span class=\"v\" style=\"font-size:10px\">${blockHash.slice(0,16)}...</span></div>`:'';
+      const blockInfo=blockHash?`<div class="cr"><span class="k">Block</span><span class="v" style="font-size:10px">${blockHash.slice(0,16)}...</span></div>`:'';
       const balInfo=utxoBalance?`<div class="cr"><span class="k">On-chain Balance</span><span class="v" style="color:var(--kas)">${utxoBalance} KAS</span></div>`:'';
       const methodNote=history&&history.found?'Transaction history is permanent. This proof survives even if the proof deposit is spent.':'Verified via UTXO. History API was unavailable.';
       res.innerHTML=`<div class="vd pass"><div class="vd-i">✓</div><div><div class="vd-title">VERIFIED: FILE IS STAMPED ON KASPA</div><div class="vd-b">This exact file has been timestamped on the Kaspa BlockDAG. The proof is mathematically unforgeable.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived from hash</span></div><div class="ck p"><div class="ci">✓</div><span>${txCount} transaction(s) found in DAG history</span></div><div class="ck p"><div class="ci">✓</div><span>Proof is immutable on Kaspa DAG</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div>${timeInfo}${txInfo}${balInfo}${blockInfo}</div><div class="info" style="margin-top:12px"><strong>This proof is permanent.</strong> ${methodNote}</div><div class="acts" style="margin-top:12px"><a href="${firstTxId?explorerUrl(firstTxId):'#'}" target="_blank" class="btn bs" style="text-decoration:none">🔗 View on explorer</a></div>`;
     }else{
       log('Not found — no transactions');
-      res.innerHTML=`<div class="vd warn"><div class="vd-i">⚠</div><div><div class="vd-title">NOT STAMPED</div><div class="vd-b">This file has no proof on the Kaspa DAG.</div></div></div><div class="chks"><div class="ck p"><div class="ci">✓</div><span>File hashed (SHA-256)</span></div><div class="ck p"><div class="ci">✓</div><span>Proof address derived</span></div><div class="ck f"><div class="ci">✕</div><span>No transactions found in history</span></div></div><div class="cert" style="margin-top:12px"><div class="cr"><span class="k">File Hash</span><span class="v" style="font-size:10px">${fileHash}</span></div><div class="cr"><span class="k">Proof Address</span><span class="v" style="font-size:10px">${proofAddr.toString()}</span></div></div><div class="info" style="margin-top:12px"><strong>No proof exists for this file.</strong> If you expected this file to be stamped, it may have been modified. Even a single byte change produces a completely different hash and proof address.</div>`;
+      res.innerHTML=`<div class="vd warn"><div class="vd-i">⚠</div><div><div class="vd-title">NOT STAMPED</div><div class="vd-b">This file has no proof on the Kaspa DAG.</div></div></div><div class="info" style="margin-top:12px"><strong>No proof exists for this file.</strong> If you expected this file to be stamped, it may have been modified. Even a single byte change produces a completely different hash and proof address.</div>`;
     }
   }catch(e){log('Verify error: '+String(e));res.innerHTML=`<div class="info e"><strong>Error:</strong> ${sanitize(String(e))}</div>`;}
 }
